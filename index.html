@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- HTML5 QR Code Scanner -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <!-- SheetJS (XLSX) สำหรับอ่านไฟล์ Excel/CSV -->
+    <!-- SheetJS (XLSX) -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
@@ -35,7 +35,6 @@
         .table th { background-color: #f1f3f5; }
         #qr-reader { width: 100%; max-width: 500px; margin: 0 auto; border-radius: 10px; overflow: hidden; }
         
-        /* Dashboard Cards Styles */
         .stat-card {
             border-radius: 12px;
             padding: 16px 20px;
@@ -152,13 +151,17 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <!-- ปรับแก้ช่องแนบรูปถ่าย ป้องกันปัญหากดแนบบนมือถือไม่ได้ -->
                             <div class="mb-4">
                                 <label class="form-label fw-bold"><i class="fa-solid fa-camera me-1 text-primary"></i> แนบรูปถ่ายเพื่อยืนยันตัวตน</label>
-                                <input type="file" class="form-control" id="s-photo" accept="image/*" capture="user" onchange="previewImage(event)" required>
+                                <input type="file" class="form-control" id="s-photo" accept="image/*" onchange="previewImage(event)" required>
+                                <div class="form-text text-muted">ถ่ายภาพจากกล้องหรือเลือกไฟล์รูปภาพจากเครื่อง</div>
                                 <div class="text-center mt-2">
                                     <img id="img-preview" src="" class="d-none img-thumbnail">
                                 </div>
                             </div>
+
                             <button type="button" class="btn btn-info w-100 btn-lg text-white fw-bold" onclick="saveStudentAttendance()"><i class="fa-solid fa-check-circle me-2"></i> ยืนยันการลงเวลาอบรม</button>
                         </form>
                     </div>
@@ -198,7 +201,7 @@
                 </div>
             </div>
 
-            <!-- 3. โหมด Admin + Dashboard สวยๆ -->
+            <!-- 3. โหมด Admin -->
             <div class="tab-pane fade" id="tab-admin" role="tabpanel">
                 <div class="card mx-auto no-print" id="adminLoginCard" style="max-width: 400px;">
                     <div class="card-body text-center py-5">
@@ -221,7 +224,6 @@
                         <div class="tab-pane fade show active" id="admin-report">
                             <div id="print-area">
                                 
-                                <!-- Dashboard Stat Cards -->
                                 <div class="row g-3 mb-4 no-print">
                                     <div class="col-md-3 col-6">
                                         <div class="stat-card stat-card-blue">
@@ -308,11 +310,13 @@
                             </div>
                         </div>
 
-                        <!-- จัดการผู้เข้าอบรม + ปุ่มอัปโหลด Excel -->
+                        <!-- จัดการผู้เข้าอบรม + เพิ่มปุ่มดาวน์โหลดแม่แบบ Excel -->
                         <div class="tab-pane fade" id="admin-students">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0 fw-bold"><i class="fa-solid fa-users text-primary"></i> ฐานข้อมูลผู้เข้ารับการอบรม (สกร.)</h5>
                                 <div>
+                                    <!-- ปุ่มดาวน์โหลดแบบฟอร์มแม่แบบ -->
+                                    <button class="btn btn-outline-secondary btn-sm me-1" onclick="downloadExcelTemplate()"><i class="fa-solid fa-file-arrow-down me-1"></i> ดาวน์โหลดแบบฟอร์ม Excel</button>
                                     <button class="btn btn-success btn-sm me-1" onclick="document.getElementById('excelFileInput').click()"><i class="fa-solid fa-file-import me-1"></i> นำเข้าไฟล์ Excel/CSV</button>
                                     <input type="file" id="excelFileInput" class="d-none" accept=".xlsx, .xls, .csv" onchange="handleExcelImport(event)">
                                     <button class="btn btn-primary btn-sm" onclick="showStudentModal()"><i class="fa-solid fa-plus me-1"></i> เพิ่มผู้เข้าอบรม</button>
@@ -405,7 +409,7 @@
             loadUniqueLevels();
         };
 
-        // ระบบบีบอัดรูปถ่ายมือถืออัตโนมัติ เพื่อให้กดแนบบนสมาร์ทโฟนได้รวดเร็ว
+        // ระบบบีบอัดรูปถ่ายเพื่อรองรับโทรศัพท์มือถือแบบสมบูรณ์
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -416,7 +420,7 @@
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        const max_size = 600; // บีบอัดขนาดสูงสุดไม่เกิน 600px
+                        const max_size = 600;
 
                         if (width > height) {
                             if (width > max_size) { height *= max_size / width; width = max_size; }
@@ -429,7 +433,7 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
 
-                        base64Photo = canvas.toDataURL('image/jpeg', 0.7); // บีบอัดคุณภาพ 70%
+                        base64Photo = canvas.toDataURL('image/jpeg', 0.7);
                         const imgPreview = document.getElementById('img-preview');
                         imgPreview.src = base64Photo;
                         imgPreview.classList.remove('d-none');
@@ -671,7 +675,6 @@
                 return matchDate && matchLevel && matchRoom && matchSubject;
             });
 
-            // อัปเดตข้อมูลการ์ด Dashboard
             document.getElementById('stat-total-log').innerText = allAdminReportsDataMaster.length;
             const presentCount = allAdminReportsDataMaster.filter(r => r.status === 'เข้าร่วม').length;
             document.getElementById('stat-present-count').innerText = presentCount;
@@ -710,6 +713,23 @@
             document.getElementById('report-summary').innerHTML = `รายการเช็คชื่อทั้งหมด ${data.length} รายการ | <span class="text-success">เข้าร่วม: ${countPresent}</span> | <span class="text-warning">สาย: ${countLate}</span> | <span class="text-info">ลา: ${countLeave}</span> | <span class="text-danger">ขาด: ${countAbsent}</span>`;
         }
 
+        // ฟังก์ชันสร้างและดาวน์โหลดแม่แบบ Excel
+        function downloadExcelTemplate() {
+            const templateData = [
+                ["รหัสผู้เข้าอบรม", "ชื่อ-สกุล", "สังกัด (สกร.)", "กลุ่ม/รุ่น"],
+                ["6901", "นายนิเกิล", "สกร.จังหวัดมหาสารคาม", "รุ่นที่ 1"],
+                ["6902", "นางสาวสมหญิง", "สกร.จังหวัดบุรีรัมย์", "รุ่นที่ 1"]
+            ];
+
+            const worksheet = XLSX.utils.aoa_to_sheet(templateData);
+            worksheet['!cols'] = [{ wch: 18 }, { wch: 25 }, { wch: 30 }, { wch: 15 }];
+            
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "แบบฟอร์มผู้เข้าอบรม");
+
+            XLSX.writeFile(workbook, "แบบฟอร์มนำเข้าข้อมูลผู้เข้ารับการอบรม_สกร.xlsx");
+        }
+
         // นำเข้าข้อมูลผู้เข้าอบรมจากไฟล์ Excel/CSV
         function handleExcelImport(event) {
             const file = event.target.files[0];
@@ -729,7 +749,6 @@
                         return;
                     }
 
-                    // แปลงข้อมูลจาก Excel (คอลัมน์ A: รหัส, B: ชื่อ-สกุล, C: สังกัด, D: รุ่น)
                     const importedStudents = [];
                     for (let i = 1; i < json.length; i++) {
                         const row = json[i];
