@@ -31,12 +31,6 @@
         .card-header { border-radius: 15px 15px 0 0 !important; font-weight: bold; }
         .table th { background-color: #f1f3f5; }
         #qr-reader { width: 100%; max-width: 500px; margin: 0 auto; border-radius: 10px; overflow: hidden; }
-        .status-radio { display: none; }
-        .status-label { padding: 5px 15px; border-radius: 20px; cursor: pointer; border: 1px solid #ccc; transition: all 0.2s; }
-        .status-radio:checked + .label-present { background-color: #198754; color: white; border-color: #198754; }
-        .status-radio:checked + .label-late { background-color: #ffc107; color: black; border-color: #ffc107; }
-        .status-radio:checked + .label-absent { background-color: #dc3545; color: white; border-color: #dc3545; }
-        .status-radio:checked + .label-leave { background-color: #0dcaf0; color: black; border-color: #0dcaf0; }
         
         .trainee-card-wrapper {
             width: 100%; 
@@ -108,6 +102,12 @@
             margin-top: 6px;
         }
 
+        #img-preview {
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
         @media print {
             body * { visibility: hidden; }
             body.print-report #print-area, body.print-report #print-area * { visibility: visible; }
@@ -137,108 +137,53 @@
     <div class="container flex-grow-1 pb-5">
         <!-- Navigation Tabs -->
         <ul class="nav nav-pills justify-content-center mb-4 no-print" id="pills-tab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-teacher" type="button"><i class="fa-solid fa-clipboard-user me-1"></i> เช็คชื่อตามกลุ่ม</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-student" type="button"><i class="fa-solid fa-user-check me-1"></i> เช็คชื่อด้วยตนเอง</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-qr" type="button" onclick="initQRSelects()"><i class="fa-solid fa-qrcode me-1"></i> สแกน QR Code</button></li>
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-student" type="button"><i class="fa-solid fa-user-check me-1"></i> เช็คชื่อด้วยตนเอง</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-qr" type="button"><i class="fa-solid fa-qrcode me-1"></i> สแกน QR Code</button></li>
             <li class="nav-item"><button class="nav-link text-danger" data-bs-toggle="pill" data-bs-target="#tab-admin" type="button"><i class="fa-solid fa-lock me-1"></i> จัดการระบบ (Admin)</button></li>
         </ul>
 
         <!-- Tab Contents -->
         <div class="tab-content" id="pills-tabContent">
-            
-            <!-- 1. โหมดเช็คชื่อตามกลุ่ม -->
-            <div class="tab-pane fade show active" id="tab-teacher" role="tabpanel">
-                <div class="card mb-4 no-print">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 text-primary"><i class="fa-solid fa-filter me-2"></i> เลือกข้อมูลการอบรม</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="teacherForm">
-                            <div class="row g-3">
-                                <div class="col-md-6"><label class="form-label">หัวข้อการอบรม / โมดูล</label><select class="form-select" id="t-subject" required><option value="">กำลังโหลด...</option></select></div>
-                                <div class="col-md-6"><label class="form-label">สังกัด (สกร.)</label>
-                                    <select class="form-select" id="t-level" required>
-                                        <option value="">เลือกสังกัด สกร. ...</option>
-                                        <option value="สกร.จังหวัด">สกร.จังหวัด</option>
-                                        <option value="สกร.อำเภอ">สกร.อำเภอ</option>
-                                        <option value="ศบช. (ศูนย์การศึกษานอกระบบฯ)">ศบช. (ศูนย์การศึกษานอกระบบฯ)</option>
-                                        <option value="ศูนย์วิทยาศาสตร์เพื่อการศึกษา">ศูนย์วิทยาศาสตร์เพื่อการศึกษา</option>
-                                        <option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่ สกร.</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4"><label class="form-label">กลุ่ม / รุ่นการอบรม</label><select class="form-select" id="t-room" required><option value="">เลือกรุ่น...</option><option value="รุ่นที่ 1">รุ่นที่ 1</option> <option value="รุ่นที่ 2">รุ่นที่ 2</option> <option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
-                                <div class="col-md-4">
-                                    <label class="form-label">วันที่อบรม</label>
-                                    <select class="form-select" id="t-date" required>
-                                        <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
-                                        <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">รอบเวลาสแกน</label>
-                                    <select class="form-select" id="t-period" required>
-                                        <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
-                                        <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
-                                        <option value="รอบเย็น (18.00 น.)">รอบเย็น (18.00 น.)</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 text-center mt-4"><button type="button" class="btn btn-primary px-4" onclick="loadStudents()"><i class="fa-solid fa-search me-1"></i> ดึงรายชื่อผู้เข้ารับการอบรม</button></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
 
-                <!-- ตารางเช็คชื่อ -->
-                <div class="card" id="attendanceCard" style="display: none;">
-                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center no-print">
-                        <h5 class="mb-0 text-success"><i class="fa-solid fa-list-check me-2"></i> บันทึกเวลาเข้าร่วมการอบรม</h5>
-                        <button class="btn btn-sm btn-outline-success" onclick="markAll('เข้าร่วม')">เข้าร่วมทั้งหมด</button>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0" id="studentTable">
-                                <thead class="table-light"><tr><th class="text-center">รหัสผู้เข้าอบรม</th><th>ชื่อ-สกุล</th><th class="text-center">สถานะการเข้าร่วม</th></tr></thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white text-center py-3 no-print">
-                        <button type="button" class="btn btn-success px-5 btn-lg" onclick="saveAttendance()"><i class="fa-solid fa-floppy-disk me-2"></i> บันทึกข้อมูลเวลาเรียน</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. โหมดผู้เข้ารับการอบรมลงเวลาด้วยตนเอง -->
-            <div class="tab-pane fade" id="tab-student" role="tabpanel">
+            <!-- 1. โหมดผู้เข้ารับการอบรมลงเวลาด้วยตนเอง -->
+            <div class="tab-pane fade show active" id="tab-student" role="tabpanel">
                 <div class="card max-w-500 mx-auto" style="max-width: 600px;">
                     <div class="card-header bg-white py-3"><h5 class="mb-0 text-info"><i class="fa-solid fa-pen-to-square me-2"></i> แบบฟอร์มลงเวลาเข้าร่วมอบรมด้วยตนเอง</h5></div>
                     <div class="card-body">
                         <form id="studentForm">
-                            <div class="mb-3"><label class="form-label">รหัสผู้เข้ารับการอบรม</label><input type="number" class="form-control form-control-lg text-center fw-bold" id="s-id" placeholder="ระบุรหัสประจำตัวผู้เข้าอบรม" required></div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">รหัสผู้เข้ารับการอบรม</label>
+                                <input type="number" class="form-control form-control-lg text-center fw-bold" id="s-id" placeholder="ระบุรหัสประจำตัวผู้เข้าอบรม" required>
+                            </div>
                             <div class="row g-3 mb-3">
-                                <div class="col-6"><label class="form-label">สังกัด (สกร.)</label>
-                                    <select class="form-select" id="s-level" required>
-                                        <option value="">เลือกสังกัด...</option>
-                                        <option value="สกร.จังหวัด">สกร.จังหวัด</option>
-                                        <option value="สกร.อำเภอ">สกร.อำเภอ</option>
-                                        <option value="ศบช. (ศูนย์การศึกษานอกระบบฯ)">ศบช.</option>
-                                        <option value="ศูนย์วิทยาศาสตร์เพื่อการศึกษา">ศูนย์วิทยาศาสตร์ฯ</option>
-                                        <option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่ สกร.</option>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">สังกัด (สกร.)</label>
+                                    <input type="text" class="form-control" id="s-level" placeholder="ระบุชื่อสังกัดของคุณ" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">กลุ่ม / รุ่นการอบรม</label>
+                                    <select class="form-select" id="s-room" required>
+                                        <option value="">เลือกรุ่น...</option>
+                                        <option value="รุ่นที่ 1">รุ่นที่ 1</option>
+                                        <option value="รุ่นที่ 2">รุ่นที่ 2</option>
+                                        <option value="รุ่นที่ 3">รุ่นที่ 3</option>
                                     </select>
                                 </div>
-                                <div class="col-6"><label class="form-label">กลุ่ม / รุ่นการอบรม</label><select class="form-select" id="s-room" required><option value="">เลือกรุ่น...</option><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
                             </div>
-                            <div class="mb-3"><label class="form-label">หัวข้อการอบรม / โมดูล</label><select class="form-select" id="s-subject" required><option value="">เลือกหัวข้อ...</option></select></div>
-                            <div class="row g-3 mb-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">หัวข้อการอบรม / โมดูล</label>
+                                <select class="form-select" id="s-subject" required><option value="">กำลังโหลด...</option></select>
+                            </div>
+                            <div class="row g-3 mb-3">
                                 <div class="col-6">
-                                    <label class="form-label">วันที่อบรม</label>
+                                    <label class="form-label fw-bold">วันที่อบรม</label>
                                     <select class="form-select" id="s-date" required>
                                         <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
                                         <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
-                                    <label class="form-label">รอบเวลาสแกน</label>
+                                    <label class="form-label fw-bold">รอบเวลาสแกน</label>
                                     <select class="form-select" id="s-period" required>
                                         <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
                                         <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
@@ -246,30 +191,30 @@
                                     </select>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-info w-100 btn-lg text-white" onclick="saveStudentAttendance()"><i class="fa-solid fa-check-circle me-2"></i> ยืนยันการลงเวลาอบรม</button>
+                            <!-- เพิ่มช่องแนบรูปถ่าย -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold"><i class="fa-solid fa-camera me-1 text-primary"></i> แนบรูปถ่ายเพื่อยืนยันตัวตน</label>
+                                <input type="file" class="form-control" id="s-photo" accept="image/*" capture="user" onchange="previewImage(event)" required>
+                                <div class="text-center mt-2">
+                                    <img id="img-preview" src="" class="d-none img-thumbnail">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-info w-100 btn-lg text-white fw-bold" onclick="saveStudentAttendance()"><i class="fa-solid fa-check-circle me-2"></i> ยืนยันการลงเวลาอบรม</button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. โหมดสแกน QR Code -->
+            <!-- 2. โหมดสแกน QR Code (ตัดช่องสังกัดและรุ่นออกแล้ว) -->
             <div class="tab-pane fade" id="tab-qr" role="tabpanel">
                 <div class="card max-w-500 mx-auto" style="max-width: 600px;">
                     <div class="card-header bg-white py-3"><h5 class="mb-0 text-dark"><i class="fa-solid fa-camera me-2"></i> สแกนบัตรประจำตัวผู้เข้าอบรม (QR Code)</h5></div>
                     <div class="card-body">
                         <div class="alert alert-warning py-2 mb-3"><small>กรุณาตั้งค่าหัวข้อการอบรม วันที่ และรอบเวลาก่อนเริ่มสแกน</small></div>
                         <div class="row g-2 mb-3">
-                            <div class="col-12"><select class="form-select form-select-sm" id="q-subject"><option value="">-- เลือกหัวข้อการอบรม --</option></select></div>
-                            <div class="col-6">
-                                <select class="form-select form-select-sm" id="q-level">
-                                    <option value="สกร.จังหวัด">สกร.จังหวัด</option>
-                                    <option value="สกร.อำเภอ">สกร.อำเภอ</option>
-                                    <option value="ศบช.">ศบช.</option>
-                                    <option value="ศูนย์วิทยาศาสตร์ฯ">ศูนย์วิทย์ฯ</option>
-                                    <option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่</option>
-                                </select>
+                            <div class="col-12">
+                                <select class="form-select form-select-sm" id="q-subject"><option value="">-- เลือกหัวข้อการอบรม --</option></select>
                             </div>
-                            <div class="col-6"><select class="form-select form-select-sm" id="q-room"><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
                             <div class="col-6">
                                 <select class="form-select form-select-sm" id="q-date">
                                     <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
@@ -293,7 +238,7 @@
                 </div>
             </div>
 
-            <!-- 4. โหมด Admin -->
+            <!-- 3. โหมด Admin -->
             <div class="tab-pane fade" id="tab-admin" role="tabpanel">
                 <div class="card mx-auto no-print" id="adminLoginCard" style="max-width: 400px;">
                     <div class="card-body text-center py-5">
@@ -337,14 +282,7 @@
                                             </div>
                                             <div class="col-md-3 col-6">
                                                 <label class="form-label" style="font-size: 12px;">สังกัด (สกร.)</label>
-                                                <select class="form-select form-select-sm" id="f-level" onchange="applyFilters()">
-                                                    <option value="">ทุกสังกัด</option>
-                                                    <option value="สกร.จังหวัด">สกร.จังหวัด</option>
-                                                    <option value="สกร.อำเภอ">สกร.อำเภอ</option>
-                                                    <option value="ศบช.">ศบช.</option>
-                                                    <option value="ศูนย์วิทยาศาสตร์">ศูนย์วิทยาศาสตร์ฯ</option>
-                                                    <option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่ สกร.</option>
-                                                </select>
+                                                <input type="text" class="form-control form-control-sm" id="f-level" placeholder="พิมพ์ชื่อสังกัด" onkeyup="applyFilters()">
                                             </div>
                                             <div class="col-md-2 col-6">
                                                 <label class="form-label" style="font-size: 12px;">รุ่นอบรม</label>
@@ -444,7 +382,7 @@
     </div>
 
     <!-- Modals -->
-    <div class="modal fade" id="studentModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="studentModalLabel">ข้อมูลผู้เข้ารับการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminStudentForm"><input type="hidden" id="m-action"><div class="mb-2"><label>รหัสประจำตัวผู้เข้าอบรม</label><input type="number" class="form-control" id="m-id" required><small class="text-danger" id="m-id-help"></small></div><div class="mb-2"><label>ชื่อ-สกุล</label><input type="text" class="form-control" id="m-name" required></div><div class="row"><div class="col-6"><label>สังกัด (สกร.)</label><select class="form-select" id="m-level" required><option value="สกร.จังหวัด">สกร.จังหวัด</option><option value="สกร.อำเภอ">สกร.อำเภอ</option><option value="ศบช.">ศบช.</option><option value="ศูนย์วิทยาศาสตร์ฯ">ศูนย์วิทยาศาสตร์ฯ</option><option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่ สกร.</option></select></div><div class="col-6"><label>รุ่นการอบรม</label><select class="form-select" id="m-room" required><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminStudent()">บันทึก</button></div></div></div></div>
+    <div class="modal fade" id="studentModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="studentModalLabel">ข้อมูลผู้เข้ารับการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminStudentForm"><input type="hidden" id="m-action"><div class="mb-2"><label>รหัสประจำตัวผู้เข้าอบรม</label><input type="number" class="form-control" id="m-id" required><small class="text-danger" id="m-id-help"></small></div><div class="mb-2"><label>ชื่อ-สกุล</label><input type="text" class="form-control" id="m-name" required></div><div class="row"><div class="col-6"><label>สังกัด (สกร.)</label><input type="text" class="form-control" id="m-level" placeholder="ระบุสังกัด" required></div><div class="col-6"><label>รุ่นการอบรม</label><select class="form-select" id="m-room" required><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminStudent()">บันทึก</button></div></div></div></div>
     <div class="modal fade" id="teacherModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="teacherModalLabel">ข้อมูลหัวข้อการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminTeacherForm"><input type="hidden" id="mt-action"><input type="hidden" id="mt-old-subject"><div class="mb-2"><label>หัวข้อการอบรม / โมดูล</label><input type="text" class="form-control" id="mt-subject" required></div><div class="mb-2"><label>จำนวนชั่วโมงกำหนด</label><input type="number" step="0.5" class="form-control" id="mt-credit" value="10" required></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminTeacher()">บันทึก</button></div></div></div></div>
 
     <!-- Bootstrap JS Bundle -->
@@ -453,7 +391,6 @@
     <script>
         const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxuUEgSfr8fw7kkfpHnr66kamqpMLwCjimv9Om7V-sEbjVEXwRfOJoY4A4DDU3Q4lUQ/exec";
 
-        let currentStudentList = [];
         let allTeachersData = [];
         let adminStudentsData = [];
         let allAdminReportsDataMaster = []; 
@@ -461,6 +398,7 @@
         let html5QrcodeScanner = null;
         let lastScannedId = "";
         let lastScanTime = 0;
+        let base64Photo = "";
 
         let studentModalInstance, teacherModalInstance;
 
@@ -470,7 +408,21 @@
             loadInitialData();
         };
 
-        // ฟังก์ชันส่งค่า API ไปยัง Google Apps Script
+        // ฟังก์ชันแปลงไฟล์รูปภาพเป็น Base64
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64Photo = e.target.result;
+                    const img = document.getElementById('img-preview');
+                    img.src = base64Photo;
+                    img.classList.remove('d-none');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         async function callGASAPI(action, payloadData = {}) {
             const payload = { action: action, ...payloadData };
             const response = await fetch(GAS_API_URL, {
@@ -496,68 +448,41 @@
 
         function populateTeacherDropdowns(data) {
             allTeachersData = data || [];
-            ['t-subject', 's-subject', 'q-subject', 'f-subject'].forEach(id => {
+            ['s-subject', 'q-subject', 'f-subject'].forEach(id => {
                 const select = document.getElementById(id);
-                select.innerHTML = id === 'f-subject' ? '<option value="">ทุกหัวข้อ</option>' : '<option value="">-- เลือกหัวข้อการอบรม --</option>';
-                allTeachersData.forEach(item => {
-                    select.innerHTML += `<option value="${item.subject}">${item.subject} (${item.credit} ชม.)</option>`;
-                });
+                if (select) {
+                    select.innerHTML = id === 'f-subject' ? '<option value="">ทุกหัวข้อ</option>' : '<option value="">-- เลือกหัวข้อการอบรม --</option>';
+                    allTeachersData.forEach(item => {
+                        select.innerHTML += `<option value="${item.subject}">${item.subject} (${item.credit} ชม.)</option>`;
+                    });
+                }
             });
-        }
-
-        function loadStudents() {
-            const form = document.getElementById('teacherForm'); if (!form.checkValidity()) { form.reportValidity(); return; }
-            const level = document.getElementById('t-level').value; const room = document.getElementById('t-room').value;
-            Swal.fire({ title: 'กำลังดึงข้อมูล...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            callGASAPI('getStudentsList', { level: level, room: room })
-                .then(renderStudentTable)
-                .catch(showError);
-        }
-
-        function renderStudentTable(students) {
-            Swal.close(); currentStudentList = students;
-            const tbody = document.querySelector('#studentTable tbody'); tbody.innerHTML = '';
-            if (!students || students.length === 0) {
-                Swal.fire('ไม่พบข้อมูล', 'ไม่มีรายชื่อผู้เข้ารับการอบรมในกลุ่มนี้', 'info');
-                document.getElementById('attendanceCard').style.display = 'none'; return;
-            }
-            students.forEach(std => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td class="text-center align-middle fw-bold">${std.id}</td><td class="align-middle">${std.name}</td><td class="text-center"><div class="d-flex justify-content-center gap-1"><input type="radio" name="status_${std.id}" id="present_${std.id}" class="status-radio" value="เข้าร่วม" checked><label for="present_${std.id}" class="status-label label-present"><i class="fa-solid fa-check"></i> เข้าร่วม</label><input type="radio" name="status_${std.id}" id="late_${std.id}" class="status-radio" value="สาย"><label for="late_${std.id}" class="status-label label-late">สาย</label><input type="radio" name="status_${std.id}" id="leave_${std.id}" class="status-radio" value="ลา"><label for="leave_${std.id}" class="status-label label-leave">ลา</label><input type="radio" name="status_${std.id}" id="absent_${std.id}" class="status-radio" value="ขาด"><label for="absent_${std.id}" class="status-label label-absent"><i class="fa-solid fa-xmark"></i> ขาด</label></div></td>`;
-                tbody.appendChild(tr);
-            });
-            document.getElementById('attendanceCard').style.display = 'block';
-        }
-
-        function markAll(status) { currentStudentList.forEach(std => { const radios = document.getElementsByName(`status_${std.id}`); for(let r of radios) { if(r.value === status) r.checked = true; } }); }
-
-        function saveAttendance() {
-            const records = []; const subject = document.getElementById('t-subject').value;
-            const period = document.getElementById('t-period').value; 
-            const date = document.getElementById('t-date').value;
-            currentStudentList.forEach(std => {
-                const status = document.querySelector(`input[name="status_${std.id}"]:checked`).value;
-                records.push({ id: std.id, name: std.name, level: std.level, room: std.room, subject: subject, date: date, period: period, status: status });
-            });
-            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            callGASAPI('saveAttendanceBatch', { records: records })
-                .then(res => { Swal.fire('สำเร็จ!', res, 'success'); document.getElementById('attendanceCard').style.display = 'none'; })
-                .catch(showError);
         }
 
         function saveStudentAttendance() {
-            const form = document.getElementById('studentForm'); if (!form.checkValidity()) { form.reportValidity(); return; }
-            const record = { id: document.getElementById('s-id').value, subject: document.getElementById('s-subject').value, level: document.getElementById('s-level').value, room: document.getElementById('s-room').value, period: document.getElementById('s-period').value, date: document.getElementById('s-date').value, status: 'เข้าร่วม' };
+            const form = document.getElementById('studentForm'); 
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+
+            const record = { 
+                id: document.getElementById('s-id').value, 
+                subject: document.getElementById('s-subject').value, 
+                level: document.getElementById('s-level').value, 
+                room: document.getElementById('s-room').value, 
+                period: document.getElementById('s-period').value, 
+                date: document.getElementById('s-date').value, 
+                photo: base64Photo,
+                status: 'เข้าร่วม' 
+            };
+
             Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
             callGASAPI('saveSingleAttendance', { record: record })
-                .then(res => { Swal.fire('สำเร็จ!', res, 'success'); form.reset(); })
+                .then(res => { 
+                    Swal.fire('สำเร็จ!', res, 'success'); 
+                    form.reset(); 
+                    document.getElementById('img-preview').classList.add('d-none');
+                    base64Photo = "";
+                })
                 .catch(showError);
-        }
-
-        function initQRSelects() {
-            ['subject', 'level', 'room', 'period', 'date'].forEach(key => { 
-                if(document.getElementById(`t-${key}`)) document.getElementById(`q-${key}`).value = document.getElementById(`t-${key}`).value; 
-            });
         }
 
         // =========================================================================
@@ -640,8 +565,6 @@
             const record = { 
                 id: studentId, 
                 name: 'สแกน QR Code', 
-                level: document.getElementById('q-level').value, 
-                room: document.getElementById('q-room').value, 
                 subject: document.getElementById('q-subject').value, 
                 date: document.getElementById('q-date').value, 
                 period: document.getElementById('q-period').value, 
@@ -699,15 +622,15 @@
 
         function applyFilters() {
             const fDate = document.getElementById('f-date').value; 
-            const fLevel = document.getElementById('f-level').value;
+            const fLevel = document.getElementById('f-level').value.toLowerCase();
             const fRoom = document.getElementById('f-room').value; 
             const fSubject = document.getElementById('f-subject').value;
 
             currentFilteredReports = allAdminReportsDataMaster.filter(row => {
                 let matchDate = true, matchLevel = true, matchRoom = true, matchSubject = true;
                 if (fDate) matchDate = (row.date === fDate); 
-                if (fLevel) matchLevel = (row.level === fLevel);
-                if (fRoom) matchRoom = (row.room.toString() === fRoom); 
+                if (fLevel) matchLevel = (row.level && row.level.toLowerCase().includes(fLevel));
+                if (fRoom) matchRoom = (row.room && row.room.toString() === fRoom); 
                 if (fSubject) matchSubject = (row.subject === fSubject);
                 return matchDate && matchLevel && matchRoom && matchSubject;
             });
@@ -746,7 +669,7 @@
 
                 let badge = r.status === 'เข้าร่วม' ? 'bg-success' : r.status === 'สาย' ? 'bg-warning text-dark' : r.status === 'ลา' ? 'bg-info text-dark' : 'bg-danger';
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td style="font-size:0.9em;">${r.timestamp}<br><small class="text-muted">${r.period}</small></td><td>${r.subject}</td><td>${r.id}</td><td>${r.name}</td><td>${r.level}/${r.room}</td><td class="text-center align-middle"><span class="badge ${badge}">${r.status}</span></td>`; 
+                tr.innerHTML = `<td style="font-size:0.9em;">${r.timestamp}<br><small class="text-muted">${r.period}</small></td><td>${r.subject}</td><td>${r.id}</td><td>${r.name}</td><td>${r.level || '-'}/${r.room || '-'}</td><td class="text-center align-middle"><span class="badge ${badge}">${r.status}</span></td>`; 
                 tbody.appendChild(tr);
             });
 
@@ -964,10 +887,7 @@
                             loadAdminTeachers();
                             loadInitialData();
                         })
-                        .catch(err => {
-                            Swal.close();
-                            showError(err);
-                        });
+                        .catch(showError);
                 }
             }); 
         }
