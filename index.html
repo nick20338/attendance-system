@@ -33,7 +33,6 @@
         .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: none; }
         .card-header { border-radius: 15px 15px 0 0 !important; font-weight: bold; }
         
-        /* แก้ไขสีหัวตารางให้อ่านง่าย */
         .table-custom-header th { 
             background-color: #343a40 !important; 
             color: #ffffff !important; 
@@ -43,7 +42,6 @@
             font-size: 13px;
         }
 
-        /* Dashboard Cards Styles */
         .stat-card {
             border-radius: 12px;
             padding: 16px 20px;
@@ -58,20 +56,132 @@
         .stat-card .stat-val { font-size: 28px; font-weight: 700; line-height: 1.2; }
         .stat-card .stat-label { font-size: 13.5px; opacity: 0.9; }
 
-        .trainee-card-wrapper {
-            width: 100%; max-width: 580px; margin: 0 auto; padding: 24px 30px;
-            border: 2px solid #ccc; border-radius: 20px; background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); box-sizing: border-box; color: #333;
+        /* ========================================================================= */
+        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (แนวตั้ง เทา-ส้ม ตามรูปภาพตัวอย่าง) */
+        /* ========================================================================= */
+        .badge-card-container {
+            width: 320px;
+            height: 520px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
 
-        .card-header-title { font-size: 22px; font-weight: 700; color: #2b2b2b; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .card-header-subtitle { font-size: 14.5px; color: #555; margin-top: 4px; font-weight: 600; }
-        .card-divider { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
-        .card-info-label { color: #666; width: 120px; font-weight: 400; font-size: 16.5px; }
-        .card-info-value { font-weight: 700; color: #000; font-size: 17px; }
-        .card-qr-box { border: 2px solid #dcdcdc; border-radius: 12px; padding: 6px; background: #fff; display: inline-block; }
-        .card-qr-box img { width: 130px; height: 130px; display: block; }
-        .card-footer-note { text-align: center; font-size: 12.5px; color: #666; margin-top: 6px; }
+        .badge-top-section {
+            background: #232931;
+            color: #ffffff;
+            padding: 20px 15px 35px 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge-top-title {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #ff8c00;
+            text-transform: uppercase;
+        }
+
+        .badge-top-subtitle {
+            font-size: 11px;
+            color: #cccccc;
+            margin-top: 2px;
+        }
+
+        /* รูปภาพผู้เข้าอบรม */
+        .badge-avatar-box {
+            width: 125px;
+            height: 145px;
+            margin: 12px auto 0 auto;
+            border-radius: 12px;
+            border: 3px solid #ff8c00;
+            overflow: hidden;
+            background: #393e46;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* แถบส้มเฉียงกั้นกลาง */
+        .badge-orange-stripe {
+            background: linear-gradient(135deg, #ff8c00, #ff5722);
+            height: 16px;
+            transform: skewY(-4deg);
+            margin-top: -10px;
+            z-index: 2;
+        }
+
+        .badge-bottom-section {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            z-index: 3;
+        }
+
+        .badge-trainee-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #232931;
+            text-align: center;
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+
+        .badge-trainee-id {
+            font-size: 13px;
+            color: #ff8c00;
+            font-weight: 700;
+            margin-top: 3px;
+            letter-spacing: 1px;
+        }
+
+        .badge-trainee-org {
+            font-size: 12px;
+            color: #666666;
+            text-align: center;
+            margin-top: 2px;
+            padding: 0 10px;
+        }
+
+        .badge-qr-container {
+            padding: 6px;
+            background: #ffffff;
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            margin-top: 8px;
+        }
+
+        .badge-qr-container img {
+            width: 100px;
+            height: 100px;
+            display: block;
+        }
+
+        .badge-footer-text {
+            font-size: 10px;
+            color: #888888;
+            margin-top: 8px;
+            text-align: center;
+        }
 
         #img-preview { max-height: 200px; object-fit: cover; border-radius: 10px; }
 
@@ -84,8 +194,12 @@
             body.print-report h5 i { display: none; }
 
             body.print-card #print-trainee-card, body.print-card #print-trainee-card * { visibility: visible; }
-            body.print-card #print-trainee-card { position: absolute; left: 0; top: 0; width: 100%; display: flex !important; justify-content: center; align-items: flex-start; padding-top: 20px; }
-            body.print-card .trainee-card-wrapper { border: 2px solid #000 !important; box-shadow: none !important; }
+            body.print-card #print-trainee-card { 
+                position: absolute; left: 0; top: 0; width: 100%; 
+                display: flex !important; justify-content: center; align-items: center; 
+                padding-top: 40px; 
+            }
+            body.print-card .badge-card-container { box-shadow: none !important; border: 1px solid #000 !important; }
 
             .no-print { display: none !important; }
             .table-responsive { max-height: none !important; overflow: visible !important; }
@@ -232,7 +346,6 @@
                         <div class="tab-pane fade show active" id="admin-report">
                             <div id="print-area">
                                 
-                                <!-- Stat Cards สรุปผู้เข้าอบรม -->
                                 <div class="row g-3 mb-4 no-print">
                                     <div class="col-md-3 col-6">
                                         <div class="stat-card stat-card-blue">
@@ -301,7 +414,6 @@
                                     </div>
                                 </div>
 
-                                <!-- ตาราง Dashboard สรุปผลรายคนเหมือนใน Google Sheet -->
                                 <div class="table-responsive" style="max-height: 520px;">
                                     <table class="table table-sm table-bordered align-middle text-center" id="adminReportTable">
                                         <thead class="table-custom-header sticky-top">
@@ -340,7 +452,7 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center align-middle" id="adminStudentTable">
                                     <thead class="table-primary">
-                                        <tr><th>รหัสผู้เข้าอบรม</th><th>ชื่อ-สกุล</th><th>สังกัด (สกร.)/รุ่น</th><th>QR Code</th><th>จัดการ</th></tr>
+                                        <tr><th>รหัส</th><th>รูปถ่าย</th><th>ชื่อ-สกุล</th><th>สังกัด (สกร.)/รุ่น</th><th>QR Code</th><th>จัดการ</th></tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
@@ -375,29 +487,79 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์ -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม -->
     <div id="print-trainee-card" class="d-none">
-        <div class="trainee-card-wrapper">
-            <div class="text-center mb-2">
-                <div class="card-header-title">📇 บัตรประจำตัวผู้เข้ารับการฝึกอบรม</div>
-                <div class="card-header-subtitle">หลักสูตร Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA (สกร.)</div>
-            </div>
-            <hr class="card-divider">
-            <div class="d-flex justify-content-between align-items-center py-2">
-                <div>
-                    <div class="mb-2 d-flex align-items-center"><span class="card-info-label">รหัสผู้เข้าอบรม :</span><span class="card-info-value fs-4" id="card-id"></span></div>
-                    <div class="mb-2 d-flex align-items-center"><span class="card-info-label">ชื่อ-สกุล :</span><span class="card-info-value" id="card-name"></span></div>
-                    <div class="d-flex align-items-center"><span class="card-info-label">สังกัด/รุ่น :</span><span class="card-info-value" id="card-level-room"></span></div>
+        <div class="badge-card-container">
+            <div class="badge-top-section">
+                <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรผู้เข้ารับการฝึกอบรม</div>
+                <div class="badge-top-subtitle">หลักสูตร Active Learning (สกร.)</div>
+                <div class="badge-avatar-box">
+                    <img id="card-avatar" src="https://via.placeholder.com/150" alt="รูปถ่าย">
                 </div>
-                <div class="card-qr-box ms-3"><img id="card-qr" src="" alt="QR Code"></div>
             </div>
-            <hr class="card-divider">
-            <div class="card-footer-note">* กรุณาแสดงบัตร หรือสแกน QR Code เพื่อบันทึกเวลาเข้าร่วมการอบรม *</div>
+            <div class="badge-orange-stripe"></div>
+            <div class="badge-bottom-section">
+                <div>
+                    <div class="badge-trainee-name" id="card-name">นาย สมชาย สายชล</div>
+                    <div class="badge-trainee-id">รหัส: <span id="card-id">6901</span></div>
+                    <div class="badge-trainee-org" id="card-level-room">สังกัด สกร.จังหวัดมหาศารคาม / รุ่นที่ 1</div>
+                </div>
+                <div class="badge-qr-container">
+                    <img id="card-qr" src="" alt="QR Code">
+                </div>
+                <div class="badge-footer-text">* กรุณาแสดงบัตรนี้เพื่อสแกนเช็คชื่อเข้าอบรม *</div>
+            </div>
         </div>
     </div>
 
-    <!-- Modals -->
-    <div class="modal fade" id="studentModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="studentModalLabel">ข้อมูลผู้เข้ารับการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminStudentForm"><input type="hidden" id="m-action"><div class="mb-2"><label>รหัสประจำตัวผู้เข้าอบรม</label><input type="number" class="form-control" id="m-id" required><small class="text-danger" id="m-id-help"></small></div><div class="mb-2"><label>ชื่อ-สกุล</label><input type="text" class="form-control" id="m-name" required></div><div class="row"><div class="col-6"><label>สังกัด (สกร.)</label><input type="text" class="form-control" id="m-level" placeholder="ระบุสังกัด" required></div><div class="col-6"><label>รุ่นการอบรม</label><select class="form-select" id="m-room" required><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminStudent()">บันทึก</button></div></div></div></div>
+    <!-- Modals เพิ่ม/แก้ไขผู้เข้าอบรม (เพิ่มช่องใส่ลิงก์ Google Drive) -->
+    <div class="modal fade" id="studentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="studentModalLabel">ข้อมูลผู้เข้ารับการอบรม</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="adminStudentForm">
+                        <input type="hidden" id="m-action">
+                        <div class="mb-2">
+                            <label class="form-label">รหัสประจำตัวผู้เข้าอบรม</label>
+                            <input type="number" class="form-control" id="m-id" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">ชื่อ-สกุล</label>
+                            <input type="text" class="form-control" id="m-name" required>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label">สังกัด (สกร.)</label>
+                                <input type="text" class="form-control" id="m-level" placeholder="ระบุสังกัด" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">รุ่นการอบรม</label>
+                                <select class="form-select" id="m-room" required>
+                                    <option value="รุ่นที่ 1">รุ่นที่ 1</option>
+                                    <option value="รุ่นที่ 2">รุ่นที่ 2</option>
+                                    <option value="รุ่นที่ 3">รุ่นที่ 3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label"><i class="fa-brands fa-google-drive text-success me-1"></i> ลิงก์รูปถ่าย (Google Drive)</label>
+                            <input type="url" class="form-control" id="m-photo" placeholder="https://drive.google.com/file/d/...">
+                            <small class="text-muted">วางลิงก์ไฟล์รูปภาพจาก Google Drive ที่ได้จากการลงทะเบียน</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAdminStudent()">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="teacherModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="teacherModalLabel">ข้อมูลหัวข้อการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminTeacherForm"><input type="hidden" id="mt-action"><input type="hidden" id="mt-old-subject"><div class="mb-2"><label>หัวข้อการอบรม / โมดูล</label><input type="text" class="form-control" id="mt-subject" required></div><div class="mb-2"><label>จำนวนชั่วโมงกำหนด</label><input type="number" step="0.5" class="form-control" id="mt-credit" value="15" required></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminTeacher()">บันทึก</button></div></div></div></div>
 
     <!-- Bootstrap JS Bundle -->
@@ -423,6 +585,18 @@
             loadInitialData();
             loadUniqueLevels();
         };
+
+        // ฟังก์ชันแปลงลิงก์ Google Drive View เป็น Direct Link เพื่อนำมาแสดงรูปภาพ
+        function convertDriveUrlToDirect(url) {
+            if (!url) return "https://via.placeholder.com/150?text=No+Image";
+            if (url.includes('drive.google.com')) {
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+                }
+            }
+            return url;
+        }
 
         function previewImage(event) {
             const file = event.target.files[0];
@@ -643,7 +817,7 @@
         }
 
         // =========================================================================
-        // Admin & Dashboard Functions (ประมวลผลตาราง Matrix สรุปรายคน)
+        // Admin & Dashboard Functions
         // =========================================================================
         function checkAdminLogin() {
             const pass = document.getElementById('adminPassword').value;
@@ -676,7 +850,6 @@
             });
         }
 
-        // สร้างตาราง Matrix สรุปตามคนเหมือน Sheet
         function buildMatrixDashboard() {
             const studentMap = {};
 
@@ -686,6 +859,7 @@
                     name: s.name,
                     level: s.level,
                     room: s.room,
+                    photoUrl: s.photoUrl,
                     c13_morning: '', c13_afternoon: '', c13_evening: '',
                     c14_morning: '', c14_afternoon: '', c14_evening: ''
                 };
@@ -699,6 +873,7 @@
                         name: log.name,
                         level: log.level,
                         room: log.room,
+                        photoUrl: '',
                         c13_morning: '', c13_afternoon: '', c13_evening: '',
                         c14_morning: '', c14_afternoon: '', c14_evening: ''
                     };
@@ -809,15 +984,16 @@
             return '<span class="badge bg-danger">ขาด</span>';
         }
 
+        // ดาวน์โหลดแม่แบบ Excel ที่รวมคอลัมน์ ลิงก์รูปถ่าย Google Drive
         function downloadExcelTemplate() {
             const templateData = [
-                ["รหัสผู้เข้าอบรม", "ชื่อ-สกุล", "สังกัด (สกร.)", "กลุ่ม/รุ่น"],
-                ["6901", "นายนิเกิล", "สกร.จังหวัดมหาสารคาม", "รุ่นที่ 1"],
-                ["6902", "นางสาวสมหญิง", "สกร.จังหวัดบุรีรัมย์", "รุ่นที่ 1"]
+                ["รหัสผู้เข้าอบรม", "ชื่อ-สกุล", "สังกัด (สกร.)", "กลุ่ม/รุ่น", "ลิงก์รูปถ่าย (Google Drive)"],
+                ["6901", "นายนิเกิล", "สกร.จังหวัดมหาสารคาม", "รุ่นที่ 1", "https://drive.google.com/file/d/15hQ8JaZ7REFacfVkAbhb9diRQt0IWNeD/view?usp=drive_link"],
+                ["6902", "นางสาวสมหญิง", "สกร.จังหวัดบุรีรัมย์", "รุ่นที่ 1", ""]
             ];
 
             const worksheet = XLSX.utils.aoa_to_sheet(templateData);
-            worksheet['!cols'] = [{ wch: 18 }, { wch: 25 }, { wch: 30 }, { wch: 15 }];
+            worksheet['!cols'] = [{ wch: 18 }, { wch: 25 }, { wch: 30 }, { wch: 15 }, { wch: 50 }];
             
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "แบบฟอร์มผู้เข้าอบรม");
@@ -850,7 +1026,8 @@
                                 id: row[0].toString().trim(),
                                 name: row[1] ? row[1].toString().trim() : '',
                                 level: row[2] ? row[2].toString().trim() : '',
-                                room: row[3] ? row[3].toString().trim() : 'รุ่นที่ 1'
+                                room: row[3] ? row[3].toString().trim() : 'รุ่นที่ 1',
+                                photoUrl: row[4] ? row[4].toString().trim() : ''
                             });
                         }
                     }
@@ -906,19 +1083,25 @@
             document.body.classList.remove('print-report');
         }
 
+        // ฟังก์ชันพิมพ์บัตรผู้เข้าอบรม (ดึงรูป Drive + สร้างแนวตั้งตามดีไซน์)
         function printStudentCard(id) {
-            const trainee = adminStudentsData.find(s => s.id === id);
+            const trainee = adminStudentsData.find(s => s.id.toString() === id.toString());
             if (!trainee) return;
+
             document.getElementById('card-id').innerText = trainee.id;
             document.getElementById('card-name').innerText = trainee.name;
-            document.getElementById('card-level-room').innerText = `${trainee.level} / ${trainee.room}`;
+            document.getElementById('card-level-room').innerText = `สังกัด ${trainee.level} / ${trainee.room}`;
             document.getElementById('card-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
+
+            // ดึงรูปถ่ายผู้เข้าอบรมจาก Google Drive Direct Link
+            const avatarImg = document.getElementById('card-avatar');
+            avatarImg.src = convertDriveUrlToDirect(trainee.photoUrl);
 
             setTimeout(() => {
                 document.body.classList.add('print-card'); 
                 window.print();
                 document.body.classList.remove('print-card'); 
-            }, 300);
+            }, 400);
         }
 
         function cleanSheets() {
@@ -959,15 +1142,17 @@
             
             data.forEach(s => {
                 const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + encodeURIComponent(s.id);
+                const avatar = convertDriveUrlToDirect(s.photoUrl);
                 const tr = document.createElement('tr');
                 tr.innerHTML = 
                     '<td class="fw-bold">' + s.id + '</td>' +
+                    '<td><img src="' + avatar + '" width="40" height="40" class="rounded-circle object-fit-cover border"></td>' +
                     '<td class="text-start">' + s.name + '</td>' +
                     '<td>' + s.level + '/' + s.room + '</td>' +
-                    '<td><img src="' + qr + '" width="40" class="border rounded"></td>' +
+                    '<td><img src="' + qr + '" width="35" class="border rounded"></td>' +
                     '<td>' +
                         '<div class="btn-group" role="group">' +
-                            '<button class="btn btn-info btn-sm text-white" onclick="printStudentCard(\'' + s.id + '\')" title="พิมพ์บัตร/QR"><i class="fa-solid fa-print"></i></button> ' +
+                            '<button class="btn btn-info btn-sm text-white" onclick="printStudentCard(\'' + s.id + '\')" title="พิมพ์บัตรแนวตั้ง"><i class="fa-solid fa-print"></i></button> ' +
                             '<button class="btn btn-warning btn-sm" onclick="showStudentModal(\'' + s.id + '\')" title="แก้ไข"><i class="fa-solid fa-pen"></i></button> ' +
                             '<button class="btn btn-danger btn-sm" onclick="deleteAdminStudent(\'' + s.id + '\')" title="ลบ"><i class="fa-solid fa-trash"></i></button>' +
                         '</div>' +
@@ -980,13 +1165,14 @@
             id = id || null;
             document.getElementById('adminStudentForm').reset(); 
             if(id) {
-                const s = adminStudentsData.find(x => x.id === id);
+                const s = adminStudentsData.find(x => x.id.toString() === id.toString());
                 if(s) {
                     document.getElementById('m-id').value = s.id;
                     document.getElementById('m-id').readOnly = true;
                     document.getElementById('m-name').value = s.name;
                     document.getElementById('m-level').value = s.level;
                     document.getElementById('m-room').value = s.room;
+                    document.getElementById('m-photo').value = s.photoUrl || '';
                     document.getElementById('m-action').value = 'edit';
                 }
             } else {
@@ -1002,7 +1188,8 @@
                 id: document.getElementById('m-id').value,
                 name: document.getElementById('m-name').value,
                 level: document.getElementById('m-level').value,
-                room: document.getElementById('m-room').value
+                room: document.getElementById('m-room').value,
+                photoUrl: document.getElementById('m-photo').value
             };
             Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
             callGASAPI('manageStudentAdmin', { record: r })
