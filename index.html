@@ -616,8 +616,7 @@ function stopQRScanner() {
 }
 
         // ใส่ Web App URL ของ Google Apps Script ที่ Deploy ไว้
-const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxuUEgSfr8fw7kkfpHnr66kamqpMLwCjimv9Om7V-sEbjVEXwRfOJoY4A4DDU3Q4lUQ/exec";
-
+const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxs7sloLDoolasatW8VfRIXpYVtkW-80D_IWs77PMcPqHbqAfUn2azt54ARUM-K98Lf/exec
 function onScanSuccess(decodedText) {
     const studentId = decodedText.trim();
     if (lastScannedId === studentId && (Date.now() - lastScanTime) < 5000) return; 
