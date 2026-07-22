@@ -32,9 +32,18 @@
         .nav-pills .nav-link.active { background-color: #0d6efd; color: white; box-shadow: 0 4px 6px rgba(13,110,253,0.2); }
         .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: none; }
         .card-header { border-radius: 15px 15px 0 0 !important; font-weight: bold; }
-        .table th { background-color: #f1f3f5; }
-        #qr-reader { width: 100%; max-width: 500px; margin: 0 auto; border-radius: 10px; overflow: hidden; }
         
+        /* แก้ไขสีหัวตารางให้อ่านง่าย */
+        .table-custom-header th { 
+            background-color: #343a40 !important; 
+            color: #ffffff !important; 
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        /* Dashboard Cards Styles */
         .stat-card {
             border-radius: 12px;
             padding: 16px 20px;
@@ -70,7 +79,7 @@
             body * { visibility: hidden; }
             body.print-report #print-area, body.print-report #print-area * { visibility: visible; }
             body.print-report #print-area { position: absolute; left: 0; top: 0; width: 100%; }
-            body.print-report .table th, body.print-report .table td { border: 1px solid #000 !important; padding: 4px !important; font-size: 13px; }
+            body.print-report .table th, body.print-report .table td { border: 1px solid #000 !important; padding: 4px !important; font-size: 12px; }
             body.print-report .badge { border: 1px solid #000; color: #000 !important; background: none !important; }
             body.print-report h5 i { display: none; }
 
@@ -152,7 +161,6 @@
                                 </div>
                             </div>
 
-                            <!-- ปรับแก้ช่องแนบรูปถ่าย ป้องกันปัญหากดแนบบนมือถือไม่ได้ -->
                             <div class="mb-4">
                                 <label class="form-label fw-bold"><i class="fa-solid fa-camera me-1 text-primary"></i> แนบรูปถ่ายเพื่อยืนยันตัวตน</label>
                                 <input type="file" class="form-control" id="s-photo" accept="image/*" onchange="previewImage(event)" required>
@@ -224,23 +232,24 @@
                         <div class="tab-pane fade show active" id="admin-report">
                             <div id="print-area">
                                 
+                                <!-- Stat Cards สรุปผู้เข้าอบรม -->
                                 <div class="row g-3 mb-4 no-print">
                                     <div class="col-md-3 col-6">
                                         <div class="stat-card stat-card-blue">
-                                            <div class="stat-val" id="stat-total-log">0</div>
-                                            <div class="stat-label"><i class="fa-solid fa-clipboard-check me-1"></i> เช็คชื่อทั้งหมด (ครั้ง)</div>
+                                            <div class="stat-val" id="stat-students-count">0</div>
+                                            <div class="stat-label"><i class="fa-solid fa-users me-1"></i> ผู้เข้าอบรมทั้งหมด</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-6">
                                         <div class="stat-card stat-card-green">
-                                            <div class="stat-val" id="stat-present-count">0</div>
-                                            <div class="stat-label"><i class="fa-solid fa-circle-check me-1"></i> เข้าร่วมแล้ว</div>
+                                            <div class="stat-val" id="stat-pass-count">0</div>
+                                            <div class="stat-label"><i class="fa-solid fa-circle-check me-1"></i> ผ่านเกณฑ์ (≥10 ชม.)</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-6">
                                         <div class="stat-card stat-card-orange">
-                                            <div class="stat-val" id="stat-students-count">0</div>
-                                            <div class="stat-label"><i class="fa-solid fa-users me-1"></i> ผู้เข้าอบรมทั้งหมด</div>
+                                            <div class="stat-val" id="stat-fail-count">0</div>
+                                            <div class="stat-label"><i class="fa-solid fa-clock me-1"></i> ยังไม่ผ่านเกณฑ์</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-6">
@@ -252,7 +261,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="mb-0 fw-bold" id="report-title"><i class="fa-solid fa-chart-pie me-2 text-primary"></i> รายงานเวลาการอบรมรวม</h5>
+                                    <h5 class="mb-0 fw-bold" id="report-title"><i class="fa-solid fa-chart-pie me-2 text-primary"></i> รายงานเวลาการอบรมสรุปรายบุคคล (15 ชั่วโมง)</h5>
                                     <div class="no-print">
                                         <button class="btn btn-outline-primary btn-sm me-1" onclick="loadAdminReports()"><i class="fa-solid fa-arrows-rotate me-1"></i> รีเฟรช</button>
                                         <button class="btn btn-secondary btn-sm me-1" onclick="printReport()"><i class="fa-solid fa-print"></i> พิมพ์ / PDF</button>
@@ -264,44 +273,51 @@
                                 <div class="card bg-light mb-3 no-print">
                                     <div class="card-body p-2">
                                         <div class="row g-2">
-                                            <div class="col-md-3 col-6">
-                                                <label class="form-label" style="font-size: 12px;">วันที่อบรม</label>
-                                                <select class="form-select form-select-sm" id="f-date" onchange="applyFilters()">
-                                                    <option value="">ทุกวัน</option>
-                                                    <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
-                                                    <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 col-6">
+                                            <div class="col-md-4 col-6">
                                                 <label class="form-label" style="font-size: 12px;">สังกัด (สกร.)</label>
                                                 <select class="form-select form-select-sm" id="f-level" onchange="applyFilters()">
                                                     <option value="">ทุกสังกัด</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-2 col-6">
+                                            <div class="col-md-3 col-6">
                                                 <label class="form-label" style="font-size: 12px;">รุ่นอบรม</label>
                                                 <select class="form-select form-select-sm" id="f-room" onchange="applyFilters()">
                                                     <option value="">ทุกรุ่น</option>
                                                     <option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-2 col-6">
-                                                <label class="form-label" style="font-size: 12px;">หัวข้อการอบรม</label>
-                                                <select class="form-select form-select-sm" id="f-subject" onchange="applyFilters()">
-                                                    <option value="">ทุกหัวข้อ</option>
+                                            <div class="col-md-3 col-6">
+                                                <label class="form-label" style="font-size: 12px;">สถานะประเมิน</label>
+                                                <select class="form-select form-select-sm" id="f-status" onchange="applyFilters()">
+                                                    <option value="">ทุกสถานะ</option>
+                                                    <option value="ผ่านเกณฑ์">ผ่านเกณฑ์</option>
+                                                    <option value="ไม่ผ่านเกณฑ์">ไม่ผ่านเกณฑ์</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-2 col-12 d-flex align-items-end">
+                                            <div class="col-md-2 col-6 d-flex align-items-end">
                                                 <button class="btn btn-outline-danger btn-sm w-100" onclick="clearFilters()">ล้างตัวกรอง</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="table-responsive" style="max-height: 500px;">
-                                    <table class="table table-sm table-bordered align-middle" id="adminReportTable">
-                                        <thead class="table-dark sticky-top">
-                                            <tr><th>วัน/เวลา</th><th>หัวข้ออบรม</th><th>รหัสผู้เข้าอบรม</th><th>ชื่อ-สกุล</th><th>สังกัด (สกร.)/รุ่น</th><th>สถานะ</th></tr>
+                                <!-- ตาราง Dashboard สรุปผลรายคนเหมือนใน Google Sheet -->
+                                <div class="table-responsive" style="max-height: 520px;">
+                                    <table class="table table-sm table-bordered align-middle text-center" id="adminReportTable">
+                                        <thead class="table-custom-header sticky-top">
+                                            <tr>
+                                                <th style="min-width: 90px;">รหัส</th>
+                                                <th style="min-width: 160px;" class="text-start">ชื่อ-สกุล / สังกัด</th>
+                                                <th style="min-width: 90px;">13 ส.ค.<br><small>(เช้า 09.00)</small></th>
+                                                <th style="min-width: 90px;">13 ส.ค.<br><small>(บ่าย 13.00)</small></th>
+                                                <th style="min-width: 90px;">13 ส.ค.<br><small>(เย็น 18.00)</small></th>
+                                                <th style="min-width: 90px;">14 ส.ค.<br><small>(เช้า 09.00)</small></th>
+                                                <th style="min-width: 90px;">14 ส.ค.<br><small>(บ่าย 13.00)</small></th>
+                                                <th style="min-width: 90px;">14 ส.ค.<br><small>(เย็น 18.00)</small></th>
+                                                <th style="min-width: 80px;">รวม (ชม.)</th>
+                                                <th style="min-width: 70px;">ร้อยละ (%)</th>
+                                                <th style="min-width: 100px;">การประเมินเกณฑ์</th>
+                                            </tr>
                                         </thead>
                                         <tbody></tbody>
                                     </table>
@@ -310,12 +326,11 @@
                             </div>
                         </div>
 
-                        <!-- จัดการผู้เข้าอบรม + เพิ่มปุ่มดาวน์โหลดแม่แบบ Excel -->
+                        <!-- จัดการผู้เข้าอบรม -->
                         <div class="tab-pane fade" id="admin-students">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0 fw-bold"><i class="fa-solid fa-users text-primary"></i> ฐานข้อมูลผู้เข้ารับการอบรม (สกร.)</h5>
                                 <div>
-                                    <!-- ปุ่มดาวน์โหลดแบบฟอร์มแม่แบบ -->
                                     <button class="btn btn-outline-secondary btn-sm me-1" onclick="downloadExcelTemplate()"><i class="fa-solid fa-file-arrow-down me-1"></i> ดาวน์โหลดแบบฟอร์ม Excel</button>
                                     <button class="btn btn-success btn-sm me-1" onclick="document.getElementById('excelFileInput').click()"><i class="fa-solid fa-file-import me-1"></i> นำเข้าไฟล์ Excel/CSV</button>
                                     <input type="file" id="excelFileInput" class="d-none" accept=".xlsx, .xls, .csv" onchange="handleExcelImport(event)">
@@ -394,7 +409,7 @@
         let allTeachersData = [];
         let adminStudentsData = [];
         let allAdminReportsDataMaster = []; 
-        let currentFilteredReports = [];    
+        let matrixDashboardData = [];
         let html5QrcodeScanner = null;
         let lastScannedId = "";
         let lastScanTime = 0;
@@ -409,7 +424,6 @@
             loadUniqueLevels();
         };
 
-        // ระบบบีบอัดรูปถ่ายเพื่อรองรับโทรศัพท์มือถือแบบสมบูรณ์
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -485,10 +499,10 @@
 
         function populateTeacherDropdowns(data) {
             allTeachersData = data || [];
-            ['s-subject', 'q-subject', 'f-subject'].forEach(id => {
+            ['s-subject', 'q-subject'].forEach(id => {
                 const select = document.getElementById(id);
                 if (select) {
-                    select.innerHTML = id === 'f-subject' ? '<option value="">ทุกหัวข้อ</option>' : '<option value="">-- เลือกหัวข้อการอบรม --</option>';
+                    select.innerHTML = '<option value="">-- เลือกหัวข้อการอบรม --</option>';
                     allTeachersData.forEach(item => {
                         select.innerHTML += `<option value="${item.subject}">${item.subject} (${item.credit} ชม.)</option>`;
                     });
@@ -614,7 +628,6 @@
             callGASAPI('saveSingleAttendance', { record: record })
                 .then(res => {
                     stopQRScanner();
-                    
                     Swal.fire({
                         icon: 'success',
                         title: 'บันทึกสำเร็จ!',
@@ -630,7 +643,7 @@
         }
 
         // =========================================================================
-        // Admin & Dashboard Functions
+        // Admin & Dashboard Functions (ประมวลผลตาราง Matrix สรุปรายคน)
         // =========================================================================
         function checkAdminLogin() {
             const pass = document.getElementById('adminPassword').value;
@@ -645,75 +658,157 @@
         }
 
         function loadAdminReports() {
-            Swal.fire({ title: 'กำลังโหลดข้อมูลแดชบอร์ด...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            callGASAPI('getAllAttendanceReports')
-                .then(data => { 
-                    allAdminReportsDataMaster = data || []; 
-                    applyFilters(); 
-                    loadUniqueLevels();
-                    Swal.close(); 
-                })
-                .catch(err => { 
-                    allAdminReportsDataMaster = []; 
-                    applyFilters(); 
-                    Swal.close(); 
+            Swal.fire({ title: 'กำลังประมวลผลแดชบอร์ด...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+            
+            Promise.all([
+                callGASAPI('getAllStudentsAdmin'),
+                callGASAPI('getAllAttendanceReports')
+            ]).then(([students, logs]) => {
+                adminStudentsData = students || [];
+                allAdminReportsDataMaster = logs || [];
+                
+                buildMatrixDashboard();
+                loadUniqueLevels();
+                Swal.close();
+            }).catch(err => {
+                Swal.close();
+                showError(err);
+            });
+        }
+
+        // สร้างตาราง Matrix สรุปตามคนเหมือน Sheet
+        function buildMatrixDashboard() {
+            const studentMap = {};
+
+            adminStudentsData.forEach(s => {
+                studentMap[s.id.toString()] = {
+                    id: s.id,
+                    name: s.name,
+                    level: s.level,
+                    room: s.room,
+                    c13_morning: '', c13_afternoon: '', c13_evening: '',
+                    c14_morning: '', c14_afternoon: '', c14_evening: ''
+                };
+            });
+
+            allAdminReportsDataMaster.forEach(log => {
+                const sId = log.id ? log.id.toString() : '';
+                if (!studentMap[sId]) {
+                    studentMap[sId] = {
+                        id: log.id,
+                        name: log.name,
+                        level: log.level,
+                        room: log.room,
+                        c13_morning: '', c13_afternoon: '', c13_evening: '',
+                        c14_morning: '', c14_afternoon: '', c14_evening: ''
+                    };
+                }
+
+                const d = log.date || '';
+                const p = log.period || '';
+                const st = log.status || 'เข้าร่วม';
+
+                if (d.includes('13')) {
+                    if (p.includes('เช้า') || p.includes('09')) studentMap[sId].c13_morning = st;
+                    else if (p.includes('บ่าย') || p.includes('13')) studentMap[sId].c13_afternoon = st;
+                    else if (p.includes('เย็น') || p.includes('18')) studentMap[sId].c13_evening = st;
+                } else if (d.includes('14')) {
+                    if (p.includes('เช้า') || p.includes('09')) studentMap[sId].c14_morning = st;
+                    else if (p.includes('บ่าย') || p.includes('13')) studentMap[sId].c14_afternoon = st;
+                    else if (p.includes('เย็น') || p.includes('18')) studentMap[sId].c14_evening = st;
+                }
+            });
+
+            matrixDashboardData = Object.values(studentMap).map(s => {
+                let sessionCount = 0;
+                [s.c13_morning, s.c13_afternoon, s.c13_evening, s.c14_morning, s.c14_afternoon, s.c14_evening].forEach(v => {
+                    if (v === 'เข้าร่วม' || v === 'สาย') sessionCount++;
                 });
+
+                const totalHours = sessionCount * 2.5;
+                const percentage = ((totalHours / 15) * 100).toFixed(2);
+                const passStatus = totalHours >= 10 ? 'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์';
+
+                return { ...s, totalHours, percentage, passStatus };
+            });
+
+            applyFilters();
         }
 
         function applyFilters() {
-            const fDate = document.getElementById('f-date').value; 
             const fLevel = document.getElementById('f-level').value;
-            const fRoom = document.getElementById('f-room').value; 
-            const fSubject = document.getElementById('f-subject').value;
+            const fRoom = document.getElementById('f-room').value;
+            const fStatus = document.getElementById('f-status').value;
 
-            currentFilteredReports = allAdminReportsDataMaster.filter(row => {
-                let matchDate = true, matchLevel = true, matchRoom = true, matchSubject = true;
-                if (fDate) matchDate = (row.date === fDate); 
+            const filteredData = matrixDashboardData.filter(row => {
+                let matchLevel = true, matchRoom = true, matchStatus = true;
                 if (fLevel) matchLevel = (row.level && row.level === fLevel);
-                if (fRoom) matchRoom = (row.room && row.room.toString() === fRoom); 
-                if (fSubject) matchSubject = (row.subject === fSubject);
-                return matchDate && matchLevel && matchRoom && matchSubject;
+                if (fRoom) matchRoom = (row.room && row.room.toString() === fRoom);
+                if (fStatus) matchStatus = (row.passStatus === fStatus);
+                return matchLevel && matchRoom && matchStatus;
             });
 
-            document.getElementById('stat-total-log').innerText = allAdminReportsDataMaster.length;
-            const presentCount = allAdminReportsDataMaster.filter(r => r.status === 'เข้าร่วม').length;
-            document.getElementById('stat-present-count').innerText = presentCount;
+            let passCount = 0, failCount = 0;
+            matrixDashboardData.forEach(s => {
+                if (s.passStatus === 'ผ่านเกณฑ์') passCount++;
+                else failCount++;
+            });
 
-            renderAdminReportTable(currentFilteredReports);
+            document.getElementById('stat-students-count').innerText = matrixDashboardData.length;
+            document.getElementById('stat-pass-count').innerText = passCount;
+            document.getElementById('stat-fail-count').innerText = failCount;
+
+            renderAdminReportTable(filteredData);
         }
 
         function clearFilters() {
-            ['f-date', 'f-level', 'f-room', 'f-subject'].forEach(id => document.getElementById(id).value = ''); 
+            ['f-level', 'f-room', 'f-status'].forEach(id => document.getElementById(id).value = ''); 
             applyFilters();
         }
 
         function renderAdminReportTable(data) {
             const tbody = document.querySelector('#adminReportTable tbody'); 
             tbody.innerHTML = '';
-            let countPresent = 0, countLate = 0, countLeave = 0, countAbsent = 0;
 
             if(!data || data.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td></tr>'; 
+                tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td></tr>'; 
                 document.getElementById('report-summary').innerText = ''; 
                 return; 
             }
             
-            data.slice().reverse().forEach((r) => {
-                if(r.status === 'เข้าร่วม') countPresent++; 
-                else if(r.status === 'สาย') countLate++; 
-                else if(r.status === 'ลา') countLeave++; 
-                else if(r.status === 'ขาด') countAbsent++;
-
-                let badge = r.status === 'เข้าร่วม' ? 'bg-success' : r.status === 'สาย' ? 'bg-warning text-dark' : r.status === 'ลา' ? 'bg-info text-dark' : 'bg-danger';
+            data.forEach((r) => {
+                const badgeClass = r.passStatus === 'ผ่านเกณฑ์' ? 'bg-success' : 'bg-danger';
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td style="font-size:0.9em;">${r.timestamp}<br><small class="text-muted">${r.period}</small></td><td>${r.subject}</td><td>${r.id}</td><td>${r.name}</td><td>${r.level || '-'}/${r.room || '-'}</td><td class="text-center align-middle"><span class="badge ${badge}">${r.status}</span></td>`; 
+                tr.innerHTML = `
+                    <td class="fw-bold">${r.id}</td>
+                    <td class="text-start">
+                        <div class="fw-bold">${r.name}</div>
+                        <small class="text-muted">${r.level || '-'}/${r.room || '-'}</small>
+                    </td>
+                    <td>${renderStatusBadge(r.c13_morning)}</td>
+                    <td>${renderStatusBadge(r.c13_afternoon)}</td>
+                    <td>${renderStatusBadge(r.c13_evening)}</td>
+                    <td>${renderStatusBadge(r.c14_morning)}</td>
+                    <td>${renderStatusBadge(r.c14_afternoon)}</td>
+                    <td>${renderStatusBadge(r.c14_evening)}</td>
+                    <td class="fw-bold fs-6">${r.totalHours}</td>
+                    <td class="fw-bold">${r.percentage}%</td>
+                    <td><span class="badge ${badgeClass}">${r.passStatus}</span></td>
+                `; 
                 tbody.appendChild(tr);
             });
 
-            document.getElementById('report-summary').innerHTML = `รายการเช็คชื่อทั้งหมด ${data.length} รายการ | <span class="text-success">เข้าร่วม: ${countPresent}</span> | <span class="text-warning">สาย: ${countLate}</span> | <span class="text-info">ลา: ${countLeave}</span> | <span class="text-danger">ขาด: ${countAbsent}</span>`;
+            document.getElementById('report-summary').innerHTML = `ผู้เข้าอบรมทั้งหมด ${data.length} คน`;
         }
 
-        // ฟังก์ชันสร้างและดาวน์โหลดแม่แบบ Excel
+        function renderStatusBadge(val) {
+            if (!val) return '<span class="text-muted">-</span>';
+            if (val === 'เข้าร่วม') return '<span class="badge bg-success">เข้าร่วม</span>';
+            if (val === 'สาย') return '<span class="badge bg-warning text-dark">สาย</span>';
+            if (val === 'ลา') return '<span class="badge bg-info text-dark">ลา</span>';
+            return '<span class="badge bg-danger">ขาด</span>';
+        }
+
         function downloadExcelTemplate() {
             const templateData = [
                 ["รหัสผู้เข้าอบรม", "ชื่อ-สกุล", "สังกัด (สกร.)", "กลุ่ม/รุ่น"],
@@ -726,11 +821,9 @@
             
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "แบบฟอร์มผู้เข้าอบรม");
-
             XLSX.writeFile(workbook, "แบบฟอร์มนำเข้าข้อมูลผู้เข้ารับการอบรม_สกร.xlsx");
         }
 
-        // นำเข้าข้อมูลผู้เข้าอบรมจากไฟล์ Excel/CSV
         function handleExcelImport(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -773,7 +866,7 @@
                         .then(res => {
                             Swal.fire('นำเข้าสำเร็จ!', res, 'success');
                             loadAdminStudents();
-                            loadUniqueLevels();
+                            loadAdminReports();
                             document.getElementById('excelFileInput').value = '';
                         })
                         .catch(showError);
@@ -786,14 +879,24 @@
         }
 
         function exportToExcel() {
-            if(!currentFilteredReports || currentFilteredReports.length === 0) { Swal.fire('ไม่มีข้อมูล', 'ไม่มีข้อมูลให้ส่งออก', 'warning'); return; }
-            let csvContent = "\uFEFF"; csvContent += "วันที่,ช่วงการอบรม,หัวข้ออบรม,รหัสผู้เข้าอบรม,ชื่อ-สกุล,สังกัด(สกร.),รุ่น,สถานะ,เวลาบันทึก\n";
-            currentFilteredReports.forEach(function(row) {
-                let r = [ row.date, row.period, row.subject, row.id, row.name, row.level, row.room, row.status, row.timestamp ];
-                let rowString = r.map(item => `"${(item || '').toString().replace(/"/g, '""')}"`).join(","); csvContent += rowString + "\n";
+            if(!matrixDashboardData || matrixDashboardData.length === 0) { Swal.fire('ไม่มีข้อมูล', 'ไม่มีข้อมูลให้ส่งออก', 'warning'); return; }
+            let csvContent = "\uFEFF"; 
+            csvContent += "รหัสผู้เข้าอบรม,ชื่อ-สกุล,สังกัด(สกร.),รุ่น,13เช้า,13บ่าย,13เย็น,14เช้า,14บ่าย,14เย็น,รวมเวลา(ชม.),ร้อยละ(%),ผลการประเมิน\n";
+            matrixDashboardData.forEach(function(r) {
+                let row = [ 
+                    r.id, r.name, r.level, r.room, 
+                    r.c13_morning, r.c13_afternoon, r.c13_evening, 
+                    r.c14_morning, r.c14_afternoon, r.c14_evening, 
+                    r.totalHours, r.percentage, r.passStatus 
+                ];
+                let rowString = row.map(item => `"${(item || '').toString().replace(/"/g, '""')}"`).join(","); 
+                csvContent += rowString + "\n";
             });
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); const url = URL.createObjectURL(blob); 
-            const link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", `รายงานลงเวลาอบรม_สกร_GPAS5Steps_${new Date().toISOString().split('T')[0]}.csv`); 
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); 
+            const url = URL.createObjectURL(blob); 
+            const link = document.createElement("a"); 
+            link.setAttribute("href", url); 
+            link.setAttribute("download", `รายงานสรุปเวลาอบรม_สกร_15ชม_${new Date().toISOString().split('T')[0]}.csv`); 
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
@@ -844,7 +947,6 @@
             callGASAPI('getAllStudentsAdmin')
                 .then(d => { 
                     adminStudentsData = d || []; 
-                    document.getElementById('stat-students-count').innerText = adminStudentsData.length;
                     renderAdminStudent(adminStudentsData); 
                 })
                 .catch(showError);
@@ -908,7 +1010,7 @@
                     Swal.fire('สำเร็จ!', 'บันทึกข้อมูลเรียบร้อย', 'success');
                     studentModalInstance.hide();
                     loadAdminStudents();
-                    loadUniqueLevels();
+                    loadAdminReports();
                 })
                 .catch(showError);
         }
@@ -928,7 +1030,7 @@
                         .then(() => {
                             Swal.fire('ลบสำเร็จ!', '', 'success');
                             loadAdminStudents();
-                            loadUniqueLevels();
+                            loadAdminReports();
                         })
                         .catch(showError);
                 }
