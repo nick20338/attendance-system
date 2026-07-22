@@ -57,58 +57,63 @@
         .stat-card .stat-label { font-size: 13.5px; opacity: 0.9; }
 
         /* ========================================================================= */
-        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (แนวตั้ง เทา-ส้ม ตามรูปภาพตัวอย่าง) */
+        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (แนวตั้ง เทา-ส้ม) */
         /* ========================================================================= */
         .badge-card-container {
             width: 320px;
             height: 520px;
-            background: #ffffff;
+            background: #ffffff !important;
             border-radius: 18px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             overflow: hidden;
             position: relative;
             margin: 0 auto;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #d0d0d0;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .badge-top-section {
-            background: #232931;
-            color: #ffffff;
+            background-color: #232931 !important;
+            color: #ffffff !important;
             padding: 20px 15px 35px 15px;
             text-align: center;
             position: relative;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .badge-top-title {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             letter-spacing: 0.5px;
-            color: #ff8c00;
+            color: #ff8c00 !important;
             text-transform: uppercase;
         }
 
         .badge-top-subtitle {
             font-size: 11px;
-            color: #cccccc;
+            color: #dddddd !important;
             margin-top: 2px;
         }
 
-        /* รูปภาพผู้เข้าอบรม */
         .badge-avatar-box {
             width: 125px;
             height: 145px;
             margin: 12px auto 0 auto;
             border-radius: 12px;
-            border: 3px solid #ff8c00;
+            border: 3px solid #ff8c00 !important;
             overflow: hidden;
-            background: #393e46;
+            background-color: #393e46 !important;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .badge-avatar-box img {
@@ -117,13 +122,15 @@
             object-fit: cover;
         }
 
-        /* แถบส้มเฉียงกั้นกลาง */
         .badge-orange-stripe {
-            background: linear-gradient(135deg, #ff8c00, #ff5722);
+            background: linear-gradient(135deg, #ff8c00, #ff5722) !important;
+            background-color: #ff8c00 !important;
             height: 16px;
             transform: skewY(-4deg);
             margin-top: -10px;
             z-index: 2;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .badge-bottom-section {
@@ -133,14 +140,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            background: #ffffff;
+            background-color: #ffffff !important;
             z-index: 3;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .badge-trainee-name {
             font-size: 18px;
             font-weight: 700;
-            color: #232931;
+            color: #232931 !important;
             text-align: center;
             margin-top: 2px;
             line-height: 1.2;
@@ -148,7 +157,7 @@
 
         .badge-trainee-id {
             font-size: 13px;
-            color: #ff8c00;
+            color: #ff8c00 !important;
             font-weight: 700;
             margin-top: 3px;
             letter-spacing: 1px;
@@ -156,7 +165,7 @@
 
         .badge-trainee-org {
             font-size: 12px;
-            color: #666666;
+            color: #555555 !important;
             text-align: center;
             margin-top: 2px;
             padding: 0 10px;
@@ -164,10 +173,12 @@
 
         .badge-qr-container {
             padding: 6px;
-            background: #ffffff;
-            border: 2px solid #ff8c00;
+            background-color: #ffffff !important;
+            border: 2px solid #ff8c00 !important;
             border-radius: 10px;
             margin-top: 8px;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .badge-qr-container img {
@@ -178,28 +189,37 @@
 
         .badge-footer-text {
             font-size: 10px;
-            color: #888888;
-            margin-top: 8px;
+            color: #777777 !important;
+            margin-top: 6px;
             text-align: center;
         }
 
         #img-preview { max-height: 200px; object-fit: cover; border-radius: 10px; }
 
+        /* การตั้งค่า CSS บังคับแสดงผลสีตอนพิมพ์ลงกระดาษ/PDF */
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
             body * { visibility: hidden; }
             body.print-report #print-area, body.print-report #print-area * { visibility: visible; }
             body.print-report #print-area { position: absolute; left: 0; top: 0; width: 100%; }
             body.print-report .table th, body.print-report .table td { border: 1px solid #000 !important; padding: 4px !important; font-size: 12px; }
             body.print-report .badge { border: 1px solid #000; color: #000 !important; background: none !important; }
-            body.print-report h5 i { display: none; }
 
             body.print-card #print-trainee-card, body.print-card #print-trainee-card * { visibility: visible; }
             body.print-card #print-trainee-card { 
                 position: absolute; left: 0; top: 0; width: 100%; 
                 display: flex !important; justify-content: center; align-items: center; 
-                padding-top: 40px; 
+                padding-top: 30px; 
             }
-            body.print-card .badge-card-container { box-shadow: none !important; border: 1px solid #000 !important; }
+            body.print-card .badge-card-container { 
+                box-shadow: none !important; 
+                border: 1px solid #333 !important; 
+            }
 
             .no-print { display: none !important; }
             .table-responsive { max-height: none !important; overflow: visible !important; }
@@ -487,22 +507,22 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม (ปรับแก้ระบบพิมพ์สีและรูปภาพ) -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
             <div class="badge-top-section">
                 <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรผู้เข้ารับการฝึกอบรม</div>
                 <div class="badge-top-subtitle">หลักสูตร Active Learning (สกร.)</div>
                 <div class="badge-avatar-box">
-                    <img id="card-avatar" src="https://via.placeholder.com/150" alt="รูปถ่าย">
+                    <img id="card-avatar" src="https://via.placeholder.com/150?text=No+Image" alt="รูปถ่าย" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
                 </div>
             </div>
             <div class="badge-orange-stripe"></div>
             <div class="badge-bottom-section">
                 <div>
-                    <div class="badge-trainee-name" id="card-name">นาย สมชาย สายชล</div>
+                    <div class="badge-trainee-name" id="card-name">ชื่อ-สกุล</div>
                     <div class="badge-trainee-id">รหัส: <span id="card-id">6901</span></div>
-                    <div class="badge-trainee-org" id="card-level-room">สังกัด สกร.จังหวัดมหาศารคาม / รุ่นที่ 1</div>
+                    <div class="badge-trainee-org" id="card-level-room">สังกัด / รุ่น</div>
                 </div>
                 <div class="badge-qr-container">
                     <img id="card-qr" src="" alt="QR Code">
@@ -512,7 +532,7 @@
         </div>
     </div>
 
-    <!-- Modals เพิ่ม/แก้ไขผู้เข้าอบรม (เพิ่มช่องใส่ลิงก์ Google Drive) -->
+    <!-- Modals -->
     <div class="modal fade" id="studentModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -548,7 +568,7 @@
                         <div class="mb-2">
                             <label class="form-label"><i class="fa-brands fa-google-drive text-success me-1"></i> ลิงก์รูปถ่าย (Google Drive)</label>
                             <input type="url" class="form-control" id="m-photo" placeholder="https://drive.google.com/file/d/...">
-                            <small class="text-muted">วางลิงก์ไฟล์รูปภาพจาก Google Drive ที่ได้จากการลงทะเบียน</small>
+                            <small class="text-muted">ระบุลิงก์ไฟล์รูปภาพจาก Google Drive</small>
                         </div>
                     </form>
                 </div>
@@ -586,14 +606,21 @@
             loadUniqueLevels();
         };
 
-        // ฟังก์ชันแปลงลิงก์ Google Drive View เป็น Direct Link เพื่อนำมาแสดงรูปภาพ
+        // ฟังก์ชันแปลงลิงก์ Google Drive เป็น Direct Thumbnail URL แบบสมบูรณ์
         function convertDriveUrlToDirect(url) {
             if (!url) return "https://via.placeholder.com/150?text=No+Image";
+            let fileId = "";
             if (url.includes('drive.google.com')) {
-                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
                 if (match && match[1]) {
-                    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+                    fileId = match[1];
                 }
+            } else if (url.length > 20 && !url.includes('http')) {
+                fileId = url.trim();
+            }
+            
+            if (fileId) {
+                return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
             }
             return url;
         }
@@ -984,7 +1011,6 @@
             return '<span class="badge bg-danger">ขาด</span>';
         }
 
-        // ดาวน์โหลดแม่แบบ Excel ที่รวมคอลัมน์ ลิงก์รูปถ่าย Google Drive
         function downloadExcelTemplate() {
             const templateData = [
                 ["รหัสผู้เข้าอบรม", "ชื่อ-สกุล", "สังกัด (สกร.)", "กลุ่ม/รุ่น", "ลิงก์รูปถ่าย (Google Drive)"],
@@ -1083,7 +1109,7 @@
             document.body.classList.remove('print-report');
         }
 
-        // ฟังก์ชันพิมพ์บัตรผู้เข้าอบรม (ดึงรูป Drive + สร้างแนวตั้งตามดีไซน์)
+        // ฟังก์ชันพิมพ์บัตรประจำตัว
         function printStudentCard(id) {
             const trainee = adminStudentsData.find(s => s.id.toString() === id.toString());
             if (!trainee) return;
@@ -1093,7 +1119,6 @@
             document.getElementById('card-level-room').innerText = `สังกัด ${trainee.level} / ${trainee.room}`;
             document.getElementById('card-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
 
-            // ดึงรูปถ่ายผู้เข้าอบรมจาก Google Drive Direct Link
             const avatarImg = document.getElementById('card-avatar');
             avatarImg.src = convertDriveUrlToDirect(trainee.photoUrl);
 
@@ -1101,7 +1126,7 @@
                 document.body.classList.add('print-card'); 
                 window.print();
                 document.body.classList.remove('print-card'); 
-            }, 400);
+            }, 500);
         }
 
         function cleanSheets() {
@@ -1146,7 +1171,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = 
                     '<td class="fw-bold">' + s.id + '</td>' +
-                    '<td><img src="' + avatar + '" width="40" height="40" class="rounded-circle object-fit-cover border"></td>' +
+                    '<td><img src="' + avatar + '" width="40" height="40" class="rounded-circle object-fit-cover border" onerror="this.src=\'https://via.placeholder.com/150?text=No+Img\'"></td>' +
                     '<td class="text-start">' + s.name + '</td>' +
                     '<td>' + s.level + '/' + s.room + '</td>' +
                     '<td><img src="' + qr + '" width="35" class="border rounded"></td>' +
