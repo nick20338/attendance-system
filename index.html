@@ -38,9 +38,6 @@
         .status-radio:checked + .label-absent { background-color: #dc3545; color: white; border-color: #dc3545; }
         .status-radio:checked + .label-leave { background-color: #0dcaf0; color: black; border-color: #0dcaf0; }
         
-        /* =========================================================================
-           สไตล์บัตรประจำตัวผู้เข้าอบรม (ปรับแต่งให้ตรงตามแบบในรูปภาพ)
-        ========================================================================= */
         .trainee-card-wrapper {
             width: 100%; 
             max-width: 580px; 
@@ -113,7 +110,6 @@
 
         @media print {
             body * { visibility: hidden; }
-            
             body.print-report #print-area, body.print-report #print-area * { visibility: visible; }
             body.print-report #print-area { position: absolute; left: 0; top: 0; width: 100%; }
             body.print-report .table th, body.print-report .table td { border: 1px solid #000 !important; padding: 4px !important; font-size: 13px; }
@@ -170,15 +166,29 @@
                                         <option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่ สกร.</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6"><label class="form-label">กลุ่ม / รุ่นการอบรม</label><select class="form-select" id="t-room" required><option value="">เลือกรุ่น...</option><option value="รุ่นที่ 1">รุ่นที่ 1</option> <option value="รุ่นที่ 2">รุ่นที่ 2</option> <option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
-                                <div class="col-md-6"><label class="form-label">ช่วงเวลา/ชั่วโมงการอบรม</label><select class="form-select" id="t-period" required><option value="">เลือกช่วงเวลา...</option><option value="ช่วงที่ 1 (ชม.1-2)">ช่วงที่ 1 (ชม.1-2)</option> <option value="ช่วงที่ 2 (ชม.3-4)">ช่วงที่ 2 (ชม.3-4)</option> <option value="ช่วงที่ 3 (ชม.5-6)">ช่วงที่ 3 (ชม.5-6)</option><option value="ช่วงที่ 4 (ชม.7-8)">ช่วงที่ 4 (ชม.7-8)</option> <option value="ช่วงที่ 5 (ชม.9-10)">ช่วงที่ 5 (ชม.9-10)</option></select></div>
+                                <div class="col-md-4"><label class="form-label">กลุ่ม / รุ่นการอบรม</label><select class="form-select" id="t-room" required><option value="">เลือกรุ่น...</option><option value="รุ่นที่ 1">รุ่นที่ 1</option> <option value="รุ่นที่ 2">รุ่นที่ 2</option> <option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
+                                <div class="col-md-4">
+                                    <label class="form-label">วันที่อบรม</label>
+                                    <select class="form-select" id="t-date" required>
+                                        <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
+                                        <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">รอบเวลาสแกน</label>
+                                    <select class="form-select" id="t-period" required>
+                                        <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
+                                        <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
+                                        <option value="รอบเย็น (18.00 น.)">รอบเย็น (18.00 น.)</option>
+                                    </select>
+                                </div>
                                 <div class="col-12 text-center mt-4"><button type="button" class="btn btn-primary px-4" onclick="loadStudents()"><i class="fa-solid fa-search me-1"></i> ดึงรายชื่อผู้เข้ารับการอบรม</button></div>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- ตารางเช็คชื่อ (ซ่อนไว้ก่อน) -->
+                <!-- ตารางเช็คชื่อ -->
                 <div class="card" id="attendanceCard" style="display: none;">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center no-print">
                         <h5 class="mb-0 text-success"><i class="fa-solid fa-list-check me-2"></i> บันทึกเวลาเข้าร่วมการอบรม</h5>
@@ -219,7 +229,23 @@
                                 <div class="col-6"><label class="form-label">กลุ่ม / รุ่นการอบรม</label><select class="form-select" id="s-room" required><option value="">เลือกรุ่น...</option><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
                             </div>
                             <div class="mb-3"><label class="form-label">หัวข้อการอบรม / โมดูล</label><select class="form-select" id="s-subject" required><option value="">เลือกหัวข้อ...</option></select></div>
-                            <div class="mb-4"><label class="form-label">ช่วงเวลา/ชั่วโมงการอบรม</label><select class="form-select" id="s-period" required><option value="">เลือกช่วงเวลา...</option><option value="ช่วงที่ 1 (ชม.1-2)">ช่วงที่ 1 (ชม.1-2)</option><option value="ช่วงที่ 2 (ชม.3-4)">ช่วงที่ 2 (ชม.3-4)</option><option value="ช่วงที่ 3 (ชม.5-6)">ช่วงที่ 3 (ชม.5-6)</option><option value="ช่วงที่ 4 (ชม.7-8)">ช่วงที่ 4 (ชม.7-8)</option><option value="ช่วงที่ 5 (ชม.9-10)">ช่วงที่ 5 (ชม.9-10)</option></select></div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <label class="form-label">วันที่อบรม</label>
+                                    <select class="form-select" id="s-date" required>
+                                        <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
+                                        <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">รอบเวลาสแกน</label>
+                                    <select class="form-select" id="s-period" required>
+                                        <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
+                                        <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
+                                        <option value="รอบเย็น (18.00 น.)">รอบเย็น (18.00 น.)</option>
+                                    </select>
+                                </div>
+                            </div>
                             <button type="button" class="btn btn-info w-100 btn-lg text-white" onclick="saveStudentAttendance()"><i class="fa-solid fa-check-circle me-2"></i> ยืนยันการลงเวลาอบรม</button>
                         </form>
                     </div>
@@ -231,10 +257,10 @@
                 <div class="card max-w-500 mx-auto" style="max-width: 600px;">
                     <div class="card-header bg-white py-3"><h5 class="mb-0 text-dark"><i class="fa-solid fa-camera me-2"></i> สแกนบัตรประจำตัวผู้เข้าอบรม (QR Code)</h5></div>
                     <div class="card-body">
-                        <div class="alert alert-warning py-2 mb-3"><small>กรุณาตั้งค่าหัวข้อการอบรมและช่วงเวลาก่อนเริ่มสแกน</small></div>
+                        <div class="alert alert-warning py-2 mb-3"><small>กรุณาตั้งค่าหัวข้อการอบรม วันที่ และรอบเวลาก่อนเริ่มสแกน</small></div>
                         <div class="row g-2 mb-3">
                             <div class="col-12"><select class="form-select form-select-sm" id="q-subject"><option value="">-- เลือกหัวข้อการอบรม --</option></select></div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <select class="form-select form-select-sm" id="q-level">
                                     <option value="สกร.จังหวัด">สกร.จังหวัด</option>
                                     <option value="สกร.อำเภอ">สกร.อำเภอ</option>
@@ -243,8 +269,20 @@
                                     <option value="สำนักงานใหญ่ สกร.">สำนักงานใหญ่</option>
                                 </select>
                             </div>
-                            <div class="col-4"><select class="form-select form-select-sm" id="q-room"><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
-                            <div class="col-4"><select class="form-select form-select-sm" id="q-period"><option value="ช่วงที่ 1">ช่วงที่ 1</option><option value="ช่วงที่ 2">ช่วงที่ 2</option><option value="ช่วงที่ 3">ช่วงที่ 3</option><option value="ช่วงที่ 4">ช่วงที่ 4</option><option value="ช่วงที่ 5">ช่วงที่ 5</option></select></div>
+                            <div class="col-6"><select class="form-select form-select-sm" id="q-room"><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div>
+                            <div class="col-6">
+                                <select class="form-select form-select-sm" id="q-date">
+                                    <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
+                                    <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select form-select-sm" id="q-period">
+                                    <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
+                                    <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
+                                    <option value="รอบเย็น (18.00 น.)">รอบเย็น (18.00 น.)</option>
+                                </select>
+                            </div>
                         </div>
                         <div id="qr-reader" class="border border-2 border-dark mb-3"></div>
                         <div class="text-center">
@@ -274,8 +312,7 @@
                     </ul>
 
                     <div class="tab-content bg-white p-3 border border-top-0 rounded-bottom">
-                        
-                        <!-- ================= ส่วนรายงาน ================= -->
+                        <!-- รายงาน -->
                         <div class="tab-pane fade show active" id="admin-report">
                             <div id="print-area">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -287,13 +324,16 @@
                                     </div>
                                 </div>
                                 
-                                <!-- ตัวกรองข้อมูล -->
                                 <div class="card bg-light mb-3 no-print">
                                     <div class="card-body p-2">
                                         <div class="row g-2">
                                             <div class="col-md-3 col-6">
                                                 <label class="form-label" style="font-size: 12px;">วันที่อบรม</label>
-                                                <input type="date" class="form-control form-control-sm" id="f-date" onchange="applyFilters()">
+                                                <select class="form-select form-select-sm" id="f-date" onchange="applyFilters()">
+                                                    <option value="">ทุกวัน</option>
+                                                    <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
+                                                    <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-3 col-6">
                                                 <label class="form-label" style="font-size: 12px;">สังกัด (สกร.)</label>
@@ -338,7 +378,7 @@
                             </div>
                         </div>
 
-                        <!-- ================= จัดการผู้เข้ารับการอบรม ================= -->
+                        <!-- จัดการผู้เข้าอบรม -->
                         <div class="tab-pane fade" id="admin-students">
                             <div class="d-flex justify-content-between mb-3">
                                 <h5><i class="fa-solid fa-users text-primary"></i> ฐานข้อมูลผู้เข้ารับการอบรม (สกร.)</h5>
@@ -354,7 +394,7 @@
                             </div>
                         </div>
 
-                        <!-- ================= จัดการหัวข้อการอบรม ================= -->
+                        <!-- จัดการหัวข้อ -->
                         <div class="tab-pane fade" id="admin-teachers">
                             <div class="d-flex justify-content-between mb-3">
                                 <h5><i class="fa-solid fa-book text-primary"></i> ฐานข้อมูลหัวข้อการอบรม</h5>
@@ -378,54 +418,28 @@
     <!-- Footer -->
     <footer class="bg-white text-center py-3 mt-auto border-top no-print w-100 shadow-sm">
         <div class="container">
-            <span class="text-muted small">ระบบเช็คเวลาเข้าร่วมการฝึกอบรม Active Learning (GPAS 5 Steps & KPA) | กรมส่งเสริมการเรียนรู้ (สกร.) | เกณฑ์ผ่านไม่น้อยกว่า 10 ชั่วโมง</span>
+            <span class="text-muted small">ระบบเช็คเวลาเข้าร่วมการฝึกอบรม Active Learning (GPAS 5 Steps & KPA) | กรมส่งเสริมการเรียนรู้ (สกร.)</span>
         </div>
     </footer>
 
-    <!-- =========================================================================
-         โครงสร้างสำหรับพิมพ์บัตรประจำตัวผู้เข้ารับการอบรม (รูปแบบตรงตามดีไซน์รูปภาพ)
-    ========================================================================= -->
+    <!-- บัตรประจำตัวพิมพ์ -->
     <div id="print-trainee-card" class="d-none">
         <div class="trainee-card-wrapper">
-            <!-- ส่วนหัวบัตร -->
             <div class="text-center mb-2">
-                <div class="card-header-title">
-                    📇 บัตรประจำตัวผู้เข้ารับการฝึกอบรม
-                </div>
-                <div class="card-header-subtitle">
-                    หลักสูตร Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA (สกร.)
-                </div>
+                <div class="card-header-title">📇 บัตรประจำตัวผู้เข้ารับการฝึกอบรม</div>
+                <div class="card-header-subtitle">หลักสูตร Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA (สกร.)</div>
             </div>
-
             <hr class="card-divider">
-
-            <!-- ส่วนข้อมูล และ QR Code -->
             <div class="d-flex justify-content-between align-items-center py-2">
                 <div>
-                    <div class="mb-2 d-flex align-items-center">
-                        <span class="card-info-label">รหัสผู้เข้าอบรม :</span>
-                        <span class="card-info-value fs-4" id="card-id">6901</span>
-                    </div>
-                    <div class="mb-2 d-flex align-items-center">
-                        <span class="card-info-label">ชื่อ-สกุล :</span>
-                        <span class="card-info-value" id="card-name">นายธีรสิทธิ์ สร้อยสวัสดิ์</span>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <span class="card-info-label">สังกัด/รุ่น :</span>
-                        <span class="card-info-value" id="card-level-room">สกร.จังหวัด / รุ่นที่ 1</span>
-                    </div>
+                    <div class="mb-2 d-flex align-items-center"><span class="card-info-label">รหัสผู้เข้าอบรม :</span><span class="card-info-value fs-4" id="card-id"></span></div>
+                    <div class="mb-2 d-flex align-items-center"><span class="card-info-label">ชื่อ-สกุล :</span><span class="card-info-value" id="card-name"></span></div>
+                    <div class="d-flex align-items-center"><span class="card-info-label">สังกัด/รุ่น :</span><span class="card-info-value" id="card-level-room"></span></div>
                 </div>
-                <div class="card-qr-box ms-3">
-                    <img id="card-qr" src="" alt="QR Code">
-                </div>
+                <div class="card-qr-box ms-3"><img id="card-qr" src="" alt="QR Code"></div>
             </div>
-
             <hr class="card-divider">
-
-            <!-- ส่วนท้ายบัตร -->
-            <div class="card-footer-note">
-                * กรุณาแสดงบัตร หรือสแกน QR Code เพื่อบันทึกเวลาเข้าร่วมการอบรมให้ครบไม่น้อยกว่า 10 ชั่วโมง *
-            </div>
+            <div class="card-footer-note">* กรุณาแสดงบัตร หรือสแกน QR Code เพื่อบันทึกเวลาเข้าร่วมการอบรม *</div>
         </div>
     </div>
 
@@ -437,7 +451,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        const isGasEnvironment = typeof google !== 'undefined' && google.script;
+        // ⚠️ ใส่ Web App URL ของ Google Sheet ใบใหม่ลงในอาร์เรย์นี้
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxuUEgSfr8fw7kkfpHnr66kamqpMLwCjimv9Om7V-sEbjVEXwRfOJoY4A4DDU3Q4lUQ/exec";
+
         let currentStudentList = [];
         let allTeachersData = [];
         let adminStudentsData = [];
@@ -455,17 +471,32 @@
             loadInitialData();
         };
 
-        function loadInitialData() {
-            if (isGasEnvironment) {
-                google.script.run.withSuccessHandler(populateTeacherDropdowns).withFailureHandler(showError).getAllTeachersAdmin();
+        // ฟังก์ชันส่งค่า API ไปยัง Google Apps Script
+        async function callGASAPI(action, payloadData = {}) {
+            const payload = { action: action, ...payloadData };
+            const response = await fetch(GAS_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if(result.status === 'success') {
+                return result.data;
             } else {
-                populateTeacherDropdowns([{ subject: 'การออกแบบ Active Learning GPAS 5 Steps', credit: '10' }]);
+                throw new Error(result.message);
             }
+        }
+
+        function loadInitialData() {
+            callGASAPI('getAllTeachersAdmin')
+                .then(populateTeacherDropdowns)
+                .catch(err => {
+                    populateTeacherDropdowns([{ subject: 'การออกแบบ Active Learning GPAS 5 Steps', credit: '10' }]);
+                });
         }
 
         function populateTeacherDropdowns(data) {
             allTeachersData = data;
-            
             ['t-subject', 's-subject', 'q-subject', 'f-subject'].forEach(id => {
                 const select = document.getElementById(id);
                 select.innerHTML = id === 'f-subject' ? '<option value="">ทุกหัวข้อ</option>' : '<option value="">-- เลือกหัวข้อการอบรม --</option>';
@@ -479,8 +510,9 @@
             const form = document.getElementById('teacherForm'); if (!form.checkValidity()) { form.reportValidity(); return; }
             const level = document.getElementById('t-level').value; const room = document.getElementById('t-room').value;
             Swal.fire({ title: 'กำลังดึงข้อมูล...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            if (isGasEnvironment) { google.script.run.withSuccessHandler(renderStudentTable).withFailureHandler(showError).getStudentsList(level, room); } 
-            else { setTimeout(() => { renderStudentTable([{ id: '6901', name: 'นายธีรสิทธิ์ สร้อยสวัสดิ์', level: level, room: room }]); }, 500); }
+            callGASAPI('getStudentsList', { level: level, room: room })
+                .then(renderStudentTable)
+                .catch(showError);
         }
 
         function renderStudentTable(students) {
@@ -502,180 +534,142 @@
 
         function saveAttendance() {
             const records = []; const subject = document.getElementById('t-subject').value;
-            const period = document.getElementById('t-period').value; const today = new Date().toISOString().split('T')[0];
+            const period = document.getElementById('t-period').value; 
+            const date = document.getElementById('t-date').value;
             currentStudentList.forEach(std => {
                 const status = document.querySelector(`input[name="status_${std.id}"]:checked`).value;
-                records.push({ id: std.id, name: std.name, level: std.level, room: std.room, subject: subject, date: today, period: period, status: status });
+                records.push({ id: std.id, name: std.name, level: std.level, room: std.room, subject: subject, date: date, period: period, status: status });
             });
             Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            if (isGasEnvironment) { google.script.run.withSuccessHandler(res => { Swal.fire('สำเร็จ!', res, 'success'); document.getElementById('attendanceCard').style.display = 'none'; }).withFailureHandler(showError).saveAttendanceBatch(records); } 
-            else { setTimeout(() => { Swal.fire('สำเร็จ!', 'บันทึกเวลาเรียนเรียบร้อย', 'success'); }, 500); }
+            callGASAPI('saveAttendanceBatch', { records: records })
+                .then(res => { Swal.fire('สำเร็จ!', res, 'success'); document.getElementById('attendanceCard').style.display = 'none'; })
+                .catch(showError);
         }
 
         function saveStudentAttendance() {
             const form = document.getElementById('studentForm'); if (!form.checkValidity()) { form.reportValidity(); return; }
-            const record = { id: document.getElementById('s-id').value, subject: document.getElementById('s-subject').value, level: document.getElementById('s-level').value, room: document.getElementById('s-room').value, period: document.getElementById('s-period').value, date: new Date().toISOString().split('T')[0], status: 'เข้าร่วม' };
+            const record = { id: document.getElementById('s-id').value, subject: document.getElementById('s-subject').value, level: document.getElementById('s-level').value, room: document.getElementById('s-room').value, period: document.getElementById('s-period').value, date: document.getElementById('s-date').value, status: 'เข้าร่วม' };
             Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            if (isGasEnvironment) { google.script.run.withSuccessHandler(res => { if(res.includes('เต็ม') || res.includes('ไม่พบ')) Swal.fire('แจ้งเตือน', res, 'warning'); else { Swal.fire('สำเร็จ!', res, 'success'); form.reset(); } }).withFailureHandler(showError).saveSingleAttendance(record); }
-            else { setTimeout(() => { Swal.fire('สำเร็จ!', 'ลงเวลาอบรมสำเร็จ', 'success'); }, 500); }
+            callGASAPI('saveSingleAttendance', { record: record })
+                .then(res => { Swal.fire('สำเร็จ!', res, 'success'); form.reset(); })
+                .catch(showError);
         }
 
         function initQRSelects() {
-            ['subject', 'level', 'room', 'period'].forEach(key => { if(document.getElementById(`t-${key}`).value) document.getElementById(`q-${key}`).value = document.getElementById(`t-${key}`).value; });
+            ['subject', 'level', 'room', 'period', 'date'].forEach(key => { 
+                if(document.getElementById(`t-${key}`)) document.getElementById(`q-${key}`).value = document.getElementById(`t-${key}`).value; 
+            });
         }
 
         // =========================================================================
-// ปรับปรุงระบบเปิดกล้องสแกน QR Code ให้มีความเสถียรและใช้งานง่ายขึ้น
-// =========================================================================
-async function startQRScanner() {
-    if (!document.getElementById("q-subject").value) {
-        Swal.fire("แจ้งเตือน", "กรุณาเลือกหัวข้ออบรมก่อน", "warning");
-        return;
-    }
-
-    try {
-        if (html5QrcodeScanner) {
-            try {
-                await html5QrcodeScanner.stop();
-                await html5QrcodeScanner.clear();
-            } catch (e) {}
-            html5QrcodeScanner = null;
-        }
-
-        html5QrcodeScanner = new Html5Qrcode("qr-reader");
-
-        const qrConfig = {
-            fps: 10,
-            qrbox: { width: 250, height: 250 },
-            aspectRatio: 1.0
-        };
-
-        // 1. ลองสั่งเปิดกล้องหลังโดยตรงผ่าน facingMode
-        try {
-            await html5QrcodeScanner.start(
-                { facingMode: "environment" },
-                qrConfig,
-                (decodedText) => { onScanSuccess(decodedText); },
-                (errorMessage) => {}
-            );
-        } catch (facingErr) {
-            // 2. ถ้าระบุ facingMode ไม่ได้ ให้ดึงรายชื่อกล้องมาเลือกกล้องหลัง (Back/Rear)
-            const cameras = await Html5Qrcode.getCameras();
-
-            if (!cameras || cameras.length === 0) {
-                Swal.fire("ไม่พบกล้อง", "อุปกรณ์นี้ไม่มีกล้อง", "error");
+        // สแกน QR Code + บันทึกสำเร็จแล้วปิดกล้องทันที
+        // =========================================================================
+        async function startQRScanner() {
+            if (!document.getElementById("q-subject").value) {
+                Swal.fire("แจ้งเตือน", "กรุณาเลือกหัวข้ออบรมก่อนสแกน", "warning");
                 return;
             }
 
-            // ค้นหากล้องที่มีคำว่า back, rear หรือ environment
-            let backCamera = cameras.find(c => {
-                const label = c.label.toLowerCase();
-                return label.includes("back") || label.includes("rear") || label.includes("environment");
-            });
+            try {
+                if (html5QrcodeScanner) {
+                    try { await html5QrcodeScanner.stop(); await html5QrcodeScanner.clear(); } catch (e) {}
+                    html5QrcodeScanner = null;
+                }
 
-            // ถ้าหาไม่เจอ ให้เลือกกล้องตัวสุดท้าย (ในมือถือส่วนใหญ่ กล้องหลังจะอยู่ตัวท้ายๆ)
-            let selectedCameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
+                html5QrcodeScanner = new Html5Qrcode("qr-reader");
+                const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
 
-            await html5QrcodeScanner.start(
-                selectedCameraId,
-                qrConfig,
-                (decodedText) => { onScanSuccess(decodedText); },
-                (errorMessage) => {}
-            );
+                try {
+                    await html5QrcodeScanner.start(
+                        { facingMode: "environment" },
+                        qrConfig,
+                        (decodedText) => { onScanSuccess(decodedText); }
+                    );
+                } catch (facingErr) {
+                    const cameras = await Html5Qrcode.getCameras();
+                    if (!cameras || cameras.length === 0) {
+                        Swal.fire("ไม่พบกล้อง", "อุปกรณ์นี้ไม่มีกล้องถ่ายรูป", "error");
+                        return;
+                    }
+                    let backCamera = cameras.find(c => {
+                        const label = c.label.toLowerCase();
+                        return label.includes("back") || label.includes("rear") || label.includes("environment");
+                    });
+                    let selectedCameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
+                    await html5QrcodeScanner.start(
+                        selectedCameraId,
+                        qrConfig,
+                        (decodedText) => { onScanSuccess(decodedText); }
+                    );
+                }
+
+                document.getElementById("btn-start-qr").classList.add("d-none");
+                document.getElementById("btn-stop-qr").classList.remove("d-none");
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ icon: "error", title: "เปิดกล้องไม่ได้", html: err.message || err });
+            }
         }
 
-        document.getElementById("btn-start-qr").classList.add("d-none");
-        document.getElementById("btn-stop-qr").classList.remove("d-none");
+        function stopQRScanner() { 
+            if (html5QrcodeScanner) { 
+                html5QrcodeScanner.stop().then(() => {
+                    html5QrcodeScanner.clear();
+                }).catch(err => {
+                    document.getElementById('qr-reader').innerHTML = "";
+                }).finally(() => {
+                    html5QrcodeScanner = null;
+                    document.getElementById('btn-start-qr').classList.remove('d-none'); 
+                    document.getElementById('btn-stop-qr').classList.add('d-none');
+                });
+            } else {
+                document.getElementById('qr-reader').innerHTML = "";
+                document.getElementById('btn-start-qr').classList.remove('d-none'); 
+                document.getElementById('btn-stop-qr').classList.add('d-none'); 
+            }
+        }
 
-    } catch (err) {
-        console.error(err);
-        Swal.fire({
-            icon: "error",
-            title: "เปิดกล้องไม่ได้",
-            html: "<b>" + err.name + "</b><br><br>" + err.message
-        });
-    }
-}
+        function onScanSuccess(decodedText) {
+            const studentId = decodedText.trim();
+            if(lastScannedId === studentId && (Date.now() - lastScanTime) < 5000) return; 
+            lastScannedId = studentId; 
+            lastScanTime = Date.now();
 
-function stopQRScanner() { 
-    if (html5QrcodeScanner) { 
-        html5QrcodeScanner.stop().then(() => {
-            html5QrcodeScanner.clear();
-        }).catch(err => {
-            document.getElementById('qr-reader').innerHTML = "";
-        }).finally(() => {
-            html5QrcodeScanner = null;
-            document.getElementById('btn-start-qr').classList.remove('d-none'); 
-            document.getElementById('btn-stop-qr').classList.add('d-none');
-        });
-    } else {
-        document.getElementById('qr-reader').innerHTML = "";
-        document.getElementById('btn-start-qr').classList.remove('d-none'); 
-        document.getElementById('btn-stop-qr').classList.add('d-none'); 
-    }
-}
+            // หยุดพักกล้องชั่วคราว
+            html5QrcodeScanner.pause();
 
-        // ใส่ Web App URL ของ Google Apps Script ที่ Deploy ไว้
-const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxuUEgSfr8fw7kkfpHnr66kamqpMLwCjimv9Om7V-sEbjVEXwRfOJoY4A4DDU3Q4lUQ/exec"
-        async function callGASAPI(action, payloadData = {}) {
-    const payload = { action: action, ...payloadData };
-    
-    const response = await fetch(GAS_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-    });
-    const result = await response.json();
-    if(result.status === 'success') {
-        return result.data;
-    } else {
-        throw new Error(result.message);
-    }
-}
-function onScanSuccess(decodedText) {
-    const studentId = decodedText.trim();
-    if (lastScannedId === studentId && (Date.now() - lastScanTime) < 5000) return; 
-    lastScannedId = studentId; 
-    lastScanTime = Date.now();
+            const record = { 
+                id: studentId, 
+                name: 'สแกน QR Code', 
+                level: document.getElementById('q-level').value, 
+                room: document.getElementById('q-room').value, 
+                subject: document.getElementById('q-subject').value, 
+                date: document.getElementById('q-date').value, 
+                period: document.getElementById('q-period').value, 
+                status: 'เข้าร่วม' 
+            };
 
-    html5QrcodeScanner.pause();
+            Swal.fire({ title: `กำลังบันทึก ${studentId}...`, allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
-    const record = { 
-        id: studentId, 
-        name: 'สแกน QR Code', 
-        level: document.getElementById('q-level').value, 
-        room: document.getElementById('q-room').value, 
-        subject: document.getElementById('q-subject').value, 
-        date: new Date().toISOString().split('T')[0], 
-        period: document.getElementById('q-period').value, 
-        status: 'เข้าร่วม' 
-    };
-
-    const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 });
-    Toast.fire({ icon: 'info', title: `กำลังบันทึก ${studentId}` });
-
-    // เตรียมแพ็กเกจข้อมูลส่งไปยัง Google Apps Script
-    const payload = {
-        action: 'saveSingleAttendance',
-        record: record
-    };
-
-    // ส่งข้อมูลแบบ Form URL Encoded ข้ามโดเมน
-    fetch(GAS_API_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ data: JSON.stringify(payload) })
-    })
-    .then(() => {
-        Toast.fire({ icon: 'success', title: `บันทึกเวลาสำเร็จ!` });
-        html5QrcodeScanner.resume();
-    })
-    .catch(err => {
-        showError(err);
-        html5QrcodeScanner.resume();
-    });
-}
+            callGASAPI('saveSingleAttendance', { record: record })
+                .then(res => {
+                    // ปิดกล้องทันทีเมื่อบันทึกสำเร็จ
+                    stopQRScanner();
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ!',
+                        text: `ลงเวลาให้รหัสประจำตัว ${studentId} เรียบร้อยแล้ว`,
+                        timer: 2500,
+                        showConfirmButton: true
+                    });
+                })
+                .catch(err => {
+                    Swal.fire('เกิดข้อผิดพลาด', err.message || err, 'error');
+                    html5QrcodeScanner.resume();
+                });
+        }
 
         // ================= Admin Panel =================
         function checkAdminLogin() {
@@ -689,11 +683,9 @@ function onScanSuccess(decodedText) {
 
         function loadAdminReports() {
             Swal.fire({ title: 'กำลังโหลดประวัติ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            if(isGasEnvironment) { 
-                google.script.run.withSuccessHandler(data => { allAdminReportsDataMaster = data; applyFilters(); Swal.close(); }).withFailureHandler(showError).getAllAttendanceReports(); 
-            } else { 
-                setTimeout(() => { allAdminReportsDataMaster = [ { date: '2026-07-22', period: 'ช่วงที่ 1', subject: 'การออกแบบ Active Learning GPAS 5 Steps', id: '6901', name: 'นายธีรสิทธิ์ สร้อยสวัสดิ์', level: 'สกร.จังหวัด', room: 'รุ่นที่ 1', status: 'เข้าร่วม', timestamp: '22/07/2026 09:00:00' } ]; applyFilters(); Swal.close(); }, 500); 
-            }
+            callGASAPI('getAllAttendanceReports')
+                .then(data => { allAdminReportsDataMaster = data || []; applyFilters(); Swal.close(); })
+                .catch(err => { allAdminReportsDataMaster = []; applyFilters(); Swal.close(); });
         }
 
         function applyFilters() {
@@ -760,7 +752,6 @@ function onScanSuccess(decodedText) {
         function printStudentCard(id) {
             const trainee = adminStudentsData.find(s => s.id === id);
             if (!trainee) return;
-
             document.getElementById('card-id').innerText = trainee.id;
             document.getElementById('card-name').innerText = trainee.name;
             document.getElementById('card-level-room').innerText = `${trainee.level} / ${trainee.room}`;
@@ -785,20 +776,17 @@ function onScanSuccess(decodedText) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({ title: 'กำลังลบชีต...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-                    if (isGasEnvironment) {
-                        google.script.run.withSuccessHandler(res => {
-                            Swal.fire('สำเร็จ!', res, 'success');
-                        }).clearOldClassSheets();
-                    } else {
-                        setTimeout(() => { Swal.fire('สำเร็จ!', 'เคลียร์ชีตเก่าเรียบร้อย', 'success'); }, 500);
-                    }
+                    callGASAPI('clearOldClassSheets')
+                        .then(res => { Swal.fire('สำเร็จ!', res, 'success'); })
+                        .catch(showError);
                 }
             });
         }
 
         function loadAdminStudents() { 
-            if(isGasEnvironment) { google.script.run.withSuccessHandler(d=>{adminStudentsData=d;renderAdminStudent(d);}).getAllStudentsAdmin(); } 
-            else { adminStudentsData = [{id:'6901', name:'นายธีรสิทธิ์ สร้อยสวัสดิ์', level:'สกร.จังหวัด', room:'รุ่นที่ 1'}]; renderAdminStudent(adminStudentsData); }
+            callGASAPI('getAllStudentsAdmin')
+                .then(d => { adminStudentsData = d || []; renderAdminStudent(adminStudentsData); })
+                .catch(showError);
         }
         
         function renderAdminStudent(data) { 
@@ -853,12 +841,14 @@ function onScanSuccess(decodedText) {
                 level: document.getElementById('m-level').value,
                 room: document.getElementById('m-room').value
             };
-            if(isGasEnvironment) {
-                google.script.run.withSuccessHandler(() => {
+            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+            callGASAPI('manageStudentAdmin', { record: r })
+                .then(() => {
+                    Swal.fire('สำเร็จ!', 'บันทึกข้อมูลเรียบร้อย', 'success');
                     studentModalInstance.hide();
                     loadAdminStudents();
-                }).manageStudentAdmin(r);
-            } 
+                })
+                .catch(showError);
         }
 
         function deleteAdminStudent(id) { 
@@ -870,26 +860,27 @@ function onScanSuccess(decodedText) {
                 confirmButtonColor: '#d33', 
                 confirmButtonText: 'ลบข้อมูล'
             }).then(r => {
-                if(r.isConfirmed && isGasEnvironment) {
-                    google.script.run.withSuccessHandler(loadAdminStudents).deleteStudentAdmin(id);
+                if(r.isConfirmed) {
+                    Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+                    callGASAPI('deleteStudentAdmin', { id: id })
+                        .then(() => {
+                            Swal.fire('ลบสำเร็จ!', '', 'success');
+                            loadAdminStudents();
+                        })
+                        .catch(showError);
                 }
             }); 
         }
         
         function loadAdminTeachers() { 
-            if(isGasEnvironment) { 
-                google.script.run.withSuccessHandler(d => {
-                    allTeachersData = d;
-                    renderAdminTeacher(d);
-                }).getAllTeachersAdmin(); 
-            } 
+            callGASAPI('getAllTeachersAdmin')
+                .then(d => { allTeachersData = d || []; renderAdminTeacher(allTeachersData); })
+                .catch(showError);
         }
 
         function renderAdminTeacher(data) { 
-            const t = document.querySelector('#adminTeacherTable tbody');
-            t.innerHTML = '';
+            const t = document.querySelector('#adminTeacherTable tbody'); t.innerHTML = '';
             if (!data || data.length === 0) return;
-
             data.forEach(s => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = '<td>' + s.subject + '</td><td>' + s.credit + '</td><td><button class="btn btn-warning btn-sm me-1" onclick="showTeacherModal(\'' + s.subject + '\',\'' + s.credit + '\')"><i class="fa-solid fa-pen"></i></button> <button class="btn btn-danger btn-sm" onclick="deleteAdminTeacher(\'' + s.subject + '\')"><i class="fa-solid fa-trash"></i></button></td>';
@@ -918,22 +909,26 @@ function onScanSuccess(decodedText) {
                 credit: document.getElementById('mt-credit').value,
                 oldSubject: document.getElementById('mt-old-subject').value
             };
-            if(isGasEnvironment) {
-                google.script.run.withSuccessHandler(() => {
+            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+            callGASAPI('manageTeacherAdmin', { record: r })
+                .then(() => {
                     teacherModalInstance.hide();
                     loadAdminTeachers();
                     loadInitialData();
-                }).manageTeacherAdmin(r);
-            } 
+                })
+                .catch(showError);
         }
 
         function deleteAdminTeacher(s) { 
             Swal.fire({ title: 'ยืนยันการลบหัวข้อ?', showCancelButton: true }).then(r => {
-                if(r.isConfirmed && isGasEnvironment) {
-                    google.script.run.withSuccessHandler(() => {
-                        loadAdminTeachers();
-                        loadInitialData();
-                    }).deleteTeacherAdmin(s);
+                if(r.isConfirmed) {
+                    Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+                    callGASAPI('deleteTeacherAdmin', { subject: s })
+                        .then(() => {
+                            loadAdminTeachers();
+                            loadInitialData();
+                        })
+                        .catch(showError);
                 }
             }); 
         }
