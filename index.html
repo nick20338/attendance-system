@@ -528,107 +528,73 @@
 // ปรับปรุงระบบเปิดกล้องสแกน QR Code ให้มีความเสถียรและใช้งานง่ายขึ้น
 // =========================================================================
 async function startQRScanner() {
-
-    // ตรวจสอบว่าเลือกหัวข้ออบรมหรือยัง
     if (!document.getElementById("q-subject").value) {
-        Swal.fire(
-            "แจ้งเตือน",
-            "กรุณาเลือกหัวข้ออบรมก่อน",
-            "warning"
-        );
+        Swal.fire("แจ้งเตือน", "กรุณาเลือกหัวข้ออบรมก่อน", "warning");
         return;
     }
 
     try {
-
-        // ถ้ามี Scanner เดิมให้ปิดก่อน
         if (html5QrcodeScanner) {
             try {
                 await html5QrcodeScanner.stop();
                 await html5QrcodeScanner.clear();
             } catch (e) {}
-        }
-
-        // ขอสิทธิ์เปิดกล้อง
-        await navigator.mediaDevices.getUserMedia({
-            video: true
-        });
-
-        // ดึงรายการกล้อง
-        const cameras = await Html5Qrcode.getCameras();
-
-        if (!cameras || cameras.length === 0) {
-            Swal.fire(
-                "ไม่พบกล้อง",
-                "อุปกรณ์นี้ไม่มีกล้อง",
-                "error"
-            );
-            return;
-        }
-
-        // เลือกกล้องหลังก่อน
-        let cameraId = cameras[0].id;
-
-        for (const camera of cameras) {
-
-            const label = camera.label.toLowerCase();
-
-            if (
-                label.includes("back") ||
-                label.includes("rear") ||
-                label.includes("environment")
-            ) {
-                cameraId = camera.id;
-                break;
-            }
-
+            html5QrcodeScanner = null;
         }
 
         html5QrcodeScanner = new Html5Qrcode("qr-reader");
 
-        await html5QrcodeScanner.start(
-            cameraId,
-            {
-                fps: 10,
-                qrbox: {
-                    width: 250,
-                    height: 250
-                },
-                aspectRatio: 1.0
-            },
-            (decodedText) => {
+        const qrConfig = {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0
+        };
 
-                onScanSuccess(decodedText);
+        // 1. ลองสั่งเปิดกล้องหลังโดยตรงผ่าน facingMode
+        try {
+            await html5QrcodeScanner.start(
+                { facingMode: "environment" },
+                qrConfig,
+                (decodedText) => { onScanSuccess(decodedText); },
+                (errorMessage) => {}
+            );
+        } catch (facingErr) {
+            // 2. ถ้าระบุ facingMode ไม่ได้ ให้ดึงรายชื่อกล้องมาเลือกกล้องหลัง (Back/Rear)
+            const cameras = await Html5Qrcode.getCameras();
 
-            },
-            (errorMessage) => {
-                // ไม่ต้องแสดง Error ทุกเฟรม
+            if (!cameras || cameras.length === 0) {
+                Swal.fire("ไม่พบกล้อง", "อุปกรณ์นี้ไม่มีกล้อง", "error");
+                return;
             }
-        );
 
-        document
-            .getElementById("btn-start-qr")
-            .classList.add("d-none");
+            // ค้นหากล้องที่มีคำว่า back, rear หรือ environment
+            let backCamera = cameras.find(c => {
+                const label = c.label.toLowerCase();
+                return label.includes("back") || label.includes("rear") || label.includes("environment");
+            });
 
-        document
-            .getElementById("btn-stop-qr")
-            .classList.remove("d-none");
+            // ถ้าหาไม่เจอ ให้เลือกกล้องตัวสุดท้าย (ในมือถือส่วนใหญ่ กล้องหลังจะอยู่ตัวท้ายๆ)
+            let selectedCameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
+
+            await html5QrcodeScanner.start(
+                selectedCameraId,
+                qrConfig,
+                (decodedText) => { onScanSuccess(decodedText); },
+                (errorMessage) => {}
+            );
+        }
+
+        document.getElementById("btn-start-qr").classList.add("d-none");
+        document.getElementById("btn-stop-qr").classList.remove("d-none");
 
     } catch (err) {
-
         console.error(err);
-
         Swal.fire({
             icon: "error",
             title: "เปิดกล้องไม่ได้",
-            html:
-                "<b>" + err.name + "</b><br><br>" +
-                err.message +
-                "<br><br>กรุณาอนุญาตการใช้กล้อง และเปิดเว็บผ่าน HTTPS"
+            html: "<b>" + err.name + "</b><br><br>" + err.message
         });
-
     }
-
 }
 
 function stopQRScanner() { 
