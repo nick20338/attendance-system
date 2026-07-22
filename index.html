@@ -130,7 +130,7 @@
     <div class="bg-primary text-white text-center py-4 mb-4 shadow-sm no-print">
         <h3 class="mb-1"><i class="fa-solid fa-graduation-cap me-2"></i> ระบบเช็คเวลาผู้เข้ารับการฝึกอบรม (สกร.)</h3>
         <p class="mb-0 mt-1 opacity-75 fs-6">หลักสูตรการออกแบบแผนการจัดการเรียนรู้แบบ Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA</p>
-        <small class="badge bg-warning text-dark mt-2">เกณฑ์การผ่าน: มีเวลาเข้าร่วมอบรมไม่น้อยกว่า 10 ชั่วโมง</small>
+        <small class="badge bg-warning text-dark mt-2">หลักสูตร 15 ชั่วโมง | เกณฑ์การผ่าน: มีเวลาเข้าร่วมอบรมไม่น้อยกว่า 10 ชั่วโมง</small>
     </div>
 
     <!-- Main Content Container -->
@@ -158,7 +158,8 @@
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">สังกัด (สกร.)</label>
-                                    <input type="text" class="form-control" id="s-level" placeholder="ระบุชื่อสังกัดของคุณ" required>
+                                    <input type="text" class="form-control" id="s-level" list="level-list" placeholder="เลือกหรือพิมพ์สังกัด" required>
+                                    <datalist id="level-list"></datalist>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">กลุ่ม / รุ่นการอบรม</label>
@@ -191,7 +192,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- เพิ่มช่องแนบรูปถ่าย -->
                             <div class="mb-4">
                                 <label class="form-label fw-bold"><i class="fa-solid fa-camera me-1 text-primary"></i> แนบรูปถ่ายเพื่อยืนยันตัวตน</label>
                                 <input type="file" class="form-control" id="s-photo" accept="image/*" capture="user" onchange="previewImage(event)" required>
@@ -205,7 +205,7 @@
                 </div>
             </div>
 
-            <!-- 2. โหมดสแกน QR Code (ตัดช่องสังกัดและรุ่นออกแล้ว) -->
+            <!-- 2. โหมดสแกน QR Code -->
             <div class="tab-pane fade" id="tab-qr" role="tabpanel">
                 <div class="card max-w-500 mx-auto" style="max-width: 600px;">
                     <div class="card-header bg-white py-3"><h5 class="mb-0 text-dark"><i class="fa-solid fa-camera me-2"></i> สแกนบัตรประจำตัวผู้เข้าอบรม (QR Code)</h5></div>
@@ -282,7 +282,7 @@
                                             </div>
                                             <div class="col-md-3 col-6">
                                                 <label class="form-label" style="font-size: 12px;">สังกัด (สกร.)</label>
-                                                <input type="text" class="form-control form-control-sm" id="f-level" placeholder="พิมพ์ชื่อสังกัด" onkeyup="applyFilters()">
+                                                <input type="text" class="form-control form-control-sm" id="f-level" placeholder="พิมพ์สังกัด" onkeyup="applyFilters()">
                                             </div>
                                             <div class="col-md-2 col-6">
                                                 <label class="form-label" style="font-size: 12px;">รุ่นอบรม</label>
@@ -383,7 +383,7 @@
 
     <!-- Modals -->
     <div class="modal fade" id="studentModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="studentModalLabel">ข้อมูลผู้เข้ารับการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminStudentForm"><input type="hidden" id="m-action"><div class="mb-2"><label>รหัสประจำตัวผู้เข้าอบรม</label><input type="number" class="form-control" id="m-id" required><small class="text-danger" id="m-id-help"></small></div><div class="mb-2"><label>ชื่อ-สกุล</label><input type="text" class="form-control" id="m-name" required></div><div class="row"><div class="col-6"><label>สังกัด (สกร.)</label><input type="text" class="form-control" id="m-level" placeholder="ระบุสังกัด" required></div><div class="col-6"><label>รุ่นการอบรม</label><select class="form-select" id="m-room" required><option value="รุ่นที่ 1">รุ่นที่ 1</option><option value="รุ่นที่ 2">รุ่นที่ 2</option><option value="รุ่นที่ 3">รุ่นที่ 3</option></select></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminStudent()">บันทึก</button></div></div></div></div>
-    <div class="modal fade" id="teacherModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="teacherModalLabel">ข้อมูลหัวข้อการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminTeacherForm"><input type="hidden" id="mt-action"><input type="hidden" id="mt-old-subject"><div class="mb-2"><label>หัวข้อการอบรม / โมดูล</label><input type="text" class="form-control" id="mt-subject" required></div><div class="mb-2"><label>จำนวนชั่วโมงกำหนด</label><input type="number" step="0.5" class="form-control" id="mt-credit" value="10" required></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminTeacher()">บันทึก</button></div></div></div></div>
+    <div class="modal fade" id="teacherModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-primary text-white"><h5 class="modal-title" id="teacherModalLabel">ข้อมูลหัวข้อการอบรม</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="adminTeacherForm"><input type="hidden" id="mt-action"><input type="hidden" id="mt-old-subject"><div class="mb-2"><label>หัวข้อการอบรม / โมดูล</label><input type="text" class="form-control" id="mt-subject" required></div><div class="mb-2"><label>จำนวนชั่วโมงกำหนด</label><input type="number" step="0.5" class="form-control" id="mt-credit" value="15" required></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-primary" onclick="saveAdminTeacher()">บันทึก</button></div></div></div></div>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -406,9 +406,9 @@
             studentModalInstance = new bootstrap.Modal(document.getElementById('studentModal'));
             teacherModalInstance = new bootstrap.Modal(document.getElementById('teacherModal'));
             loadInitialData();
+            loadUniqueLevels();
         };
 
-        // ฟังก์ชันแปลงไฟล์รูปภาพเป็น Base64
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -442,8 +442,21 @@
             callGASAPI('getAllTeachersAdmin')
                 .then(populateTeacherDropdowns)
                 .catch(err => {
-                    populateTeacherDropdowns([{ subject: 'การออกแบบ Active Learning GPAS 5 Steps', credit: '10' }]);
+                    populateTeacherDropdowns([{ subject: 'การออกแบบ Active Learning GPAS 5 Steps', credit: '15' }]);
                 });
+        }
+
+        function loadUniqueLevels() {
+            callGASAPI('getUniqueLevelsAdmin')
+                .then(levels => {
+                    const datalist = document.getElementById('level-list');
+                    if(datalist && levels) {
+                        datalist.innerHTML = '';
+                        levels.forEach(lvl => {
+                            datalist.innerHTML += `<option value="${lvl}">`;
+                        });
+                    }
+                }).catch(() => {});
         }
 
         function populateTeacherDropdowns(data) {
@@ -481,6 +494,7 @@
                     form.reset(); 
                     document.getElementById('img-preview').classList.add('d-none');
                     base64Photo = "";
+                    loadUniqueLevels();
                 })
                 .catch(showError);
         }
@@ -792,6 +806,7 @@
                     Swal.fire('สำเร็จ!', 'บันทึกข้อมูลเรียบร้อย', 'success');
                     studentModalInstance.hide();
                     loadAdminStudents();
+                    loadUniqueLevels();
                 })
                 .catch(showError);
         }
@@ -811,6 +826,7 @@
                         .then(() => {
                             Swal.fire('ลบสำเร็จ!', '', 'success');
                             loadAdminStudents();
+                            loadUniqueLevels();
                         })
                         .catch(showError);
                 }
@@ -887,7 +903,10 @@
                             loadAdminTeachers();
                             loadInitialData();
                         })
-                        .catch(showError);
+                        .catch(err => {
+                            Swal.close();
+                            showError(err);
+                        });
                 }
             }); 
         }
