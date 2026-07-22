@@ -87,7 +87,7 @@
         }
 
         .badge-top-title {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             letter-spacing: 0.5px;
             color: #ff8c00 !important;
@@ -158,7 +158,6 @@
             line-height: 1.2;
         }
 
-        /* ปรับรหัสประจำตัวให้อยู่ตรงกลาง และตัวหนังสือชัดเจน */
         .badge-trainee-id {
             font-size: 12.5px;
             color: #ff8c00 !important;
@@ -202,7 +201,21 @@
 
         #img-preview { max-height: 200px; object-fit: cover; border-radius: 10px; }
 
+        /* ========================================================================= */
+        /* CSS ควบคุมการพิมพ์ให้จบในหน้าเดียว 100% (A4 / Portrait) */
+        /* ========================================================================= */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            html, body {
+                height: 100%;
+                overflow: hidden !important;
+                background: #fff !important;
+            }
+
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -210,16 +223,23 @@
             }
 
             body * { visibility: hidden; }
+
             body.print-report #print-area, body.print-report #print-area * { visibility: visible; }
-            body.print-report #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+            body.print-report #print-area { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
             body.print-report .table th, body.print-report .table td { border: 1px solid #000 !important; padding: 4px !important; font-size: 12px; }
             body.print-report .badge { border: 1px solid #000; color: #000 !important; background: none !important; }
 
             body.print-card #print-trainee-card, body.print-card #print-trainee-card * { visibility: visible; }
             body.print-card #print-trainee-card { 
-                position: absolute; left: 0; top: 0; width: 100%; 
-                display: flex !important; justify-content: center; align-items: center; 
-                padding-top: 30px; 
+                position: fixed; 
+                left: 0; 
+                top: 0; 
+                width: 100vw; 
+                height: 100vh;
+                display: flex !important; 
+                justify-content: center; 
+                align-items: center; 
+                page-break-inside: avoid;
             }
             body.print-card .badge-card-container { 
                 box-shadow: none !important; 
@@ -512,11 +532,11 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม (ปรับแก้ตามคำขอเรียบร้อยแล้ว) -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม (ปรับแก้ส่วนหัวและควบคุมพิมพ์ 1 หน้า) -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
             <div class="badge-top-section">
-                <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรผู้เข้ารับการฝึกอบรม</div>
+                <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรประจำตัวผู้เข้ารับการฝึกอบรม</div>
                 <div class="badge-top-subtitle">หลักสูตรการออกแบบแผนการจัดการเรียนรู้แบบ Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA</div>
                 <div class="badge-avatar-box">
                     <img id="card-avatar" src="" alt="รูปถ่าย">
