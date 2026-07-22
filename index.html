@@ -451,7 +451,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ⚠️ ใส่ Web App URL ของ Google Sheet ใบใหม่ลงในอาร์เรย์นี้
         const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxuUEgSfr8fw7kkfpHnr66kamqpMLwCjimv9Om7V-sEbjVEXwRfOJoY4A4DDU3Q4lUQ/exec";
 
         let currentStudentList = [];
@@ -496,11 +495,11 @@
         }
 
         function populateTeacherDropdowns(data) {
-            allTeachersData = data;
+            allTeachersData = data || [];
             ['t-subject', 's-subject', 'q-subject', 'f-subject'].forEach(id => {
                 const select = document.getElementById(id);
                 select.innerHTML = id === 'f-subject' ? '<option value="">ทุกหัวข้อ</option>' : '<option value="">-- เลือกหัวข้อการอบรม --</option>';
-                data.forEach(item => {
+                allTeachersData.forEach(item => {
                     select.innerHTML += `<option value="${item.subject}">${item.subject} (${item.credit} ชม.)</option>`;
                 });
             });
@@ -636,7 +635,6 @@
             lastScannedId = studentId; 
             lastScanTime = Date.now();
 
-            // หยุดพักกล้องชั่วคราว
             html5QrcodeScanner.pause();
 
             const record = { 
@@ -654,7 +652,6 @@
 
             callGASAPI('saveSingleAttendance', { record: record })
                 .then(res => {
-                    // ปิดกล้องทันทีเมื่อบันทึกสำเร็จ
                     stopQRScanner();
                     
                     Swal.fire({
@@ -671,57 +668,82 @@
                 });
         }
 
-        // ================= Admin Panel =================
+        // =========================================================================
+        // ฟังก์ชันระบบล็อกอิน Admin และการจัดการฐานข้อมูล
+        // =========================================================================
         function checkAdminLogin() {
             const pass = document.getElementById('adminPassword').value;
             if(pass === '1234') { 
                 document.getElementById('adminLoginCard').classList.add('d-none');
                 document.getElementById('adminPanel').classList.remove('d-none');
                 loadAdminReports();
-            } else { Swal.fire('รหัสผ่านผิด', 'ลองใหม่อีกครั้ง', 'error'); }
+            } else { 
+                Swal.fire('รหัสผ่านไม่ถูกต้อง', 'กรุณาลองใหม่อีกครั้ง', 'error'); 
+            }
         }
 
         function loadAdminReports() {
             Swal.fire({ title: 'กำลังโหลดประวัติ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
             callGASAPI('getAllAttendanceReports')
-                .then(data => { allAdminReportsDataMaster = data || []; applyFilters(); Swal.close(); })
-                .catch(err => { allAdminReportsDataMaster = []; applyFilters(); Swal.close(); });
+                .then(data => { 
+                    allAdminReportsDataMaster = data || []; 
+                    applyFilters(); 
+                    Swal.close(); 
+                })
+                .catch(err => { 
+                    allAdminReportsDataMaster = []; 
+                    applyFilters(); 
+                    Swal.close(); 
+                });
         }
 
         function applyFilters() {
-            const fDate = document.getElementById('f-date').value; const fLevel = document.getElementById('f-level').value;
-            const fRoom = document.getElementById('f-room').value; const fSubject = document.getElementById('f-subject').value;
+            const fDate = document.getElementById('f-date').value; 
+            const fLevel = document.getElementById('f-level').value;
+            const fRoom = document.getElementById('f-room').value; 
+            const fSubject = document.getElementById('f-subject').value;
 
             currentFilteredReports = allAdminReportsDataMaster.filter(row => {
                 let matchDate = true, matchLevel = true, matchRoom = true, matchSubject = true;
-                if (fDate) matchDate = (row.date === fDate); if (fLevel) matchLevel = (row.level === fLevel);
-                if (fRoom) matchRoom = (row.room.toString() === fRoom); if (fSubject) matchSubject = (row.subject === fSubject);
+                if (fDate) matchDate = (row.date === fDate); 
+                if (fLevel) matchLevel = (row.level === fLevel);
+                if (fRoom) matchRoom = (row.room.toString() === fRoom); 
+                if (fSubject) matchSubject = (row.subject === fSubject);
                 return matchDate && matchLevel && matchRoom && matchSubject;
             });
 
             let conditions = [];
-            if(fDate) conditions.push(`วันที่ ${fDate}`); if(fLevel) conditions.push(`สังกัด ${fLevel}`);
-            if(fRoom) conditions.push(`รุ่น ${fRoom}`); if(fSubject) conditions.push(`หัวข้อ ${fSubject}`);
+            if(fDate) conditions.push(`วันที่ ${fDate}`); 
+            if(fLevel) conditions.push(`สังกัด ${fLevel}`);
+            if(fRoom) conditions.push(`รุ่น ${fRoom}`); 
+            if(fSubject) conditions.push(`หัวข้อ ${fSubject}`);
             
             document.getElementById('report-title').innerHTML = conditions.length > 0 ? `<i class="fa-solid fa-file-lines me-2 text-primary"></i> รายงาน: ${conditions.join(' | ')}` : `<i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i> รายงานเวลาการอบรมรวม (ทั้งหมด)`;
             renderAdminReportTable(currentFilteredReports);
         }
 
         function clearFilters() {
-            ['f-date', 'f-level', 'f-room', 'f-subject'].forEach(id => document.getElementById(id).value = ''); applyFilters();
+            ['f-date', 'f-level', 'f-room', 'f-subject'].forEach(id => document.getElementById(id).value = ''); 
+            applyFilters();
         }
 
         function renderAdminReportTable(data) {
-            const tbody = document.querySelector('#adminReportTable tbody'); tbody.innerHTML = '';
+            const tbody = document.querySelector('#adminReportTable tbody'); 
+            tbody.innerHTML = '';
             let countPresent = 0, countLate = 0, countLeave = 0, countAbsent = 0;
 
             if(!data || data.length === 0) { 
                 tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td></tr>'; 
-                document.getElementById('report-summary').innerText = ''; return; 
+                document.getElementById('report-summary').innerText = ''; 
+                return; 
             }
             
             data.slice().reverse().forEach((r) => {
-                if(r.status === 'เข้าร่วม') countPresent++; else if(r.status === 'สาย') countLate++; else if(r.status === 'ลา') countLeave++; else if(r.status === 'ขาด') countAbsent++;
+                if(r.status === 'เข้าร่วม') countPresent++; 
+                else if(r.status === 'สาย') countLate++; 
+                else if(r.status === 'ลา') countLeave++; 
+                else if(r.status === 'ขาด') countAbsent++;
+
                 let badge = r.status === 'เข้าร่วม' ? 'bg-success' : r.status === 'สาย' ? 'bg-warning text-dark' : r.status === 'ลา' ? 'bg-info text-dark' : 'bg-danger';
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td style="font-size:0.9em;">${r.timestamp}<br><small class="text-muted">${r.period}</small></td><td>${r.subject}</td><td>${r.id}</td><td>${r.name}</td><td>${r.level}/${r.room}</td><td class="text-center align-middle"><span class="badge ${badge}">${r.status}</span></td>`; 
@@ -902,45 +924,19 @@
             teacherModalInstance.show(); 
         }
 
-        function function saveAdminTeacher() { 
-    const r = {
-        action: document.getElementById('mt-action').value,
-        subject: document.getElementById('mt-subject').value,
-        credit: document.getElementById('mt-credit').value,
-        oldSubject: document.getElementById('mt-old-subject').value
-    };
-
-    Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-
-    callGASAPI('manageTeacherAdmin', { record: r })
-        .then(() => {
-            Swal.close(); // ปิดหน้าต่างกำลังบันทึก
-            teacherModalInstance.hide(); // ปิดฟอร์ม Modal
-            Swal.fire('สำเร็จ!', 'บันทึกหัวข้อการอบรมเรียบร้อยแล้ว', 'success');
-            loadAdminTeachers();
-            loadInitialData();
-        })
-        .catch(err => {
-            Swal.close();
-            showError(err);
-        });
-}
-
-function deleteAdminTeacher(s) { 
-    Swal.fire({ 
-        title: 'ยืนยันการลบหัวข้อ?', 
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'ลบข้อมูล',
-        cancelButtonText: 'ยกเลิก'
-    }).then(r => {
-        if(r.isConfirmed) {
-            Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            callGASAPI('deleteTeacherAdmin', { subject: s })
+        function saveAdminTeacher() { 
+            const r = {
+                action: document.getElementById('mt-action').value,
+                subject: document.getElementById('mt-subject').value,
+                credit: document.getElementById('mt-credit').value,
+                oldSubject: document.getElementById('mt-old-subject').value
+            };
+            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+            callGASAPI('manageTeacherAdmin', { record: r })
                 .then(() => {
                     Swal.close();
-                    Swal.fire('สำเร็จ!', 'ลบหัวข้อเรียบร้อยแล้ว', 'success');
+                    teacherModalInstance.hide();
+                    Swal.fire('สำเร็จ!', 'บันทึกหัวข้อการอบรมเรียบร้อยแล้ว', 'success');
                     loadAdminTeachers();
                     loadInitialData();
                 })
@@ -949,7 +945,34 @@ function deleteAdminTeacher(s) {
                     showError(err);
                 });
         }
-    }); 
-}
+
+        function deleteAdminTeacher(s) { 
+            Swal.fire({ 
+                title: 'ยืนยันการลบหัวข้อ?', 
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ลบข้อมูล',
+                cancelButtonText: 'ยกเลิก'
+            }).then(r => {
+                if(r.isConfirmed) {
+                    Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+                    callGASAPI('deleteTeacherAdmin', { subject: s })
+                        .then(() => {
+                            Swal.close();
+                            Swal.fire('สำเร็จ!', 'ลบหัวข้อเรียบร้อยแล้ว', 'success');
+                            loadAdminTeachers();
+                            loadInitialData();
+                        })
+                        .catch(err => {
+                            Swal.close();
+                            showError(err);
+                        });
+                }
+            }); 
+        }
+        
+        function showError(err) { Swal.fire('Error', err.message || err, 'error'); }
+    </script>
 </body>
 </html>
