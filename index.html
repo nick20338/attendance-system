@@ -902,38 +902,54 @@
             teacherModalInstance.show(); 
         }
 
-        function saveAdminTeacher() { 
-            const r = {
-                action: document.getElementById('mt-action').value,
-                subject: document.getElementById('mt-subject').value,
-                credit: document.getElementById('mt-credit').value,
-                oldSubject: document.getElementById('mt-old-subject').value
-            };
-            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            callGASAPI('manageTeacherAdmin', { record: r })
+        function function saveAdminTeacher() { 
+    const r = {
+        action: document.getElementById('mt-action').value,
+        subject: document.getElementById('mt-subject').value,
+        credit: document.getElementById('mt-credit').value,
+        oldSubject: document.getElementById('mt-old-subject').value
+    };
+
+    Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+
+    callGASAPI('manageTeacherAdmin', { record: r })
+        .then(() => {
+            Swal.close(); // ปิดหน้าต่างกำลังบันทึก
+            teacherModalInstance.hide(); // ปิดฟอร์ม Modal
+            Swal.fire('สำเร็จ!', 'บันทึกหัวข้อการอบรมเรียบร้อยแล้ว', 'success');
+            loadAdminTeachers();
+            loadInitialData();
+        })
+        .catch(err => {
+            Swal.close();
+            showError(err);
+        });
+}
+
+function deleteAdminTeacher(s) { 
+    Swal.fire({ 
+        title: 'ยืนยันการลบหัวข้อ?', 
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'ลบข้อมูล',
+        cancelButtonText: 'ยกเลิก'
+    }).then(r => {
+        if(r.isConfirmed) {
+            Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+            callGASAPI('deleteTeacherAdmin', { subject: s })
                 .then(() => {
-                    teacherModalInstance.hide();
+                    Swal.close();
+                    Swal.fire('สำเร็จ!', 'ลบหัวข้อเรียบร้อยแล้ว', 'success');
                     loadAdminTeachers();
                     loadInitialData();
                 })
-                .catch(showError);
+                .catch(err => {
+                    Swal.close();
+                    showError(err);
+                });
         }
-
-        function deleteAdminTeacher(s) { 
-            Swal.fire({ title: 'ยืนยันการลบหัวข้อ?', showCancelButton: true }).then(r => {
-                if(r.isConfirmed) {
-                    Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-                    callGASAPI('deleteTeacherAdmin', { subject: s })
-                        .then(() => {
-                            loadAdminTeachers();
-                            loadInitialData();
-                        })
-                        .catch(showError);
-                }
-            }); 
-        }
-        
-        function showError(err) { Swal.fire('Error', err.message || err, 'error'); }
-    </script>
+    }); 
+}
 </body>
 </html>
