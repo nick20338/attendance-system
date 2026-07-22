@@ -196,7 +196,6 @@
 
         #img-preview { max-height: 200px; object-fit: cover; border-radius: 10px; }
 
-        /* การตั้งค่า CSS บังคับแสดงผลสีตอนพิมพ์ลงกระดาษ/PDF */
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -507,14 +506,14 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม (ปรับแก้ระบบพิมพ์สีและรูปภาพ) -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
             <div class="badge-top-section">
                 <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรผู้เข้ารับการฝึกอบรม</div>
                 <div class="badge-top-subtitle">หลักสูตร Active Learning (สกร.)</div>
                 <div class="badge-avatar-box">
-                    <img id="card-avatar" src="https://via.placeholder.com/150?text=No+Image" alt="รูปถ่าย" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                    <img id="card-avatar" src="" alt="รูปถ่าย">
                 </div>
             </div>
             <div class="badge-orange-stripe"></div>
@@ -588,6 +587,9 @@
     <script>
         const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxuUEgSfr8fw7kkfpHnr66kamqpMLwCjimv9Om7V-sEbjVEXwRfOJoY4A4DDU3Q4lUQ/exec";
 
+        // SVG ไอคอนโปรไฟล์ประจำตัว (Data URL) ป้องกันปัญหาเซิร์ฟเวอร์รูปภาพล่ม
+        const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+
         let allTeachersData = [];
         let adminStudentsData = [];
         let allAdminReportsDataMaster = []; 
@@ -606,9 +608,9 @@
             loadUniqueLevels();
         };
 
-        // ฟังก์ชันแปลงลิงก์ Google Drive เป็น Direct Thumbnail URL แบบสมบูรณ์
+        // แปลงลิงก์ Google Drive
         function convertDriveUrlToDirect(url) {
-            if (!url) return "https://via.placeholder.com/150?text=No+Image";
+            if (!url) return DEFAULT_AVATAR;
             let fileId = "";
             if (url.includes('drive.google.com')) {
                 const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
@@ -1109,7 +1111,7 @@
             document.body.classList.remove('print-report');
         }
 
-        // ฟังก์ชันพิมพ์บัตรประจำตัว
+        // พิมพ์บัตรประจำตัว
         function printStudentCard(id) {
             const trainee = adminStudentsData.find(s => s.id.toString() === id.toString());
             if (!trainee) return;
@@ -1171,7 +1173,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = 
                     '<td class="fw-bold">' + s.id + '</td>' +
-                    '<td><img src="' + avatar + '" width="40" height="40" class="rounded-circle object-fit-cover border" onerror="this.src=\'https://via.placeholder.com/150?text=No+Img\'"></td>' +
+                    '<td><img src="' + avatar + '" width="40" height="40" class="rounded-circle object-fit-cover border"></td>' +
                     '<td class="text-start">' + s.name + '</td>' +
                     '<td>' + s.level + '/' + s.room + '</td>' +
                     '<td><img src="' + qr + '" width="35" class="border rounded"></td>' +
