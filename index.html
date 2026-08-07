@@ -207,72 +207,50 @@
        @media print {
             @page {
                 size: A4 portrait;
-                margin: 0;
+                margin: 10mm;
             }
 
             html, body {
-                height: 100%;
-                overflow: hidden !important;
                 background: #fff !important;
+                overflow: visible !important;
             }
 
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color-adjust: exact !important;
+            /* ซ่อนทุกอย่างในหน้าเว็บเป็นค่าเริ่มต้น */
+            body > *:not(#print-all-cards-area):not(#print-trainee-card) {
+                display: none !important;
             }
 
-            body * { visibility: hidden; }
+            .no-print { display: none !important; }
 
-            body.print-report #print-area, body.print-report #print-area * { visibility: visible; }
-            body.print-report #print-area { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
-            body.print-report .table th, body.print-report .table td { border: 1px solid #000 !important; padding: 4px !important; font-size: 12px; }
-            body.print-report .badge { border: 1px solid #000; color: #000 !important; background: none !important; }
-
-            body.print-card #print-trainee-card, body.print-card #print-trainee-card * { visibility: visible; }
-            body.print-card #print-trainee-card { 
-                position: fixed; 
-                left: 0; 
-                top: 0; 
-                width: 100vw; 
-                height: 100vh;
-                display: flex !important; 
-                justify-content: center; 
-                align-items: center; 
-                page-break-inside: avoid;
-            }
-            body.print-card .badge-card-container { 
-                box-shadow: none !important; 
-                border: 1px solid #333 !important; 
-            }
-
-            /* --- จุดที่แก้ไข: เพิ่มการแสดงผลสำหรับพิมพ์บัตรทั้งหมด --- */
-            body.print-all-cards #print-all-cards-area, 
-            body.print-all-cards #print-all-cards-area * { 
-                visibility: visible !important; 
-            }
-            body.print-all-cards #print-all-cards-area {
-                position: absolute;
+            /* กรณีพิมพ์บัตรใบเดียว */
+            body.print-card #print-trainee-card {
+                display: flex !important;
+                position: fixed;
                 left: 0;
                 top: 0;
                 width: 100vw;
-                display: flex;
-                flex-direction: column;
+                height: 100vh;
+                justify-content: center;
                 align-items: center;
-                background: #fff;
             }
+
+            /* กรณีพิมพ์บัตรทั้งหมดหลายหน้า */
+            body.print-all-cards #print-all-cards-area {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+
             body.print-all-cards .badge-card-container {
+                display: flex !important;
                 page-break-after: always !important;
                 break-after: page !important;
-                margin: 20px auto !important;
+                margin: 0 auto 20px auto !important;
                 box-shadow: none !important;
                 border: 1px solid #333 !important;
-                display: flex !important;
             }
-            /* ---------------------------------------------------- */
-
-            .no-print { display: none !important; }
-            .table-responsive { max-height: none !important; overflow: visible !important; }
         }
     </style>
 </head>
@@ -1186,16 +1164,15 @@
         }
 
         // พิมพ์บัตรประจำตัวผู้เข้าอบรมทั้งหมดออกเป็น PDF (เพิ่มใหม่)
-       function printAllStudentCards() {
+function printAllStudentCards() {
             if (!adminStudentsData || adminStudentsData.length === 0) {
                 Swal.fire('ไม่มีข้อมูล', 'ไม่พบรายชื่อผู้เข้าอบรมสำหรับพิมพ์บัตร', 'warning');
                 return;
             }
 
-            // แสดง Loading ระหว่างเตรียมรูปและ QR Code
             Swal.fire({
-                title: 'กำลังเตรียมบัตรทั้งหมด...',
-                text: 'กรุณารอสักครู่ ระบบกำลังสร้างหน้าพิมพ์',
+                title: 'กำลังสร้างบัตรทั้งหมด...',
+                text: 'กรุณารอสักครู่ ระบบกำลังเตรียมหน้าพิมพ์ PDF',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -1203,12 +1180,9 @@
             const container = document.getElementById('print-all-cards-area');
             container.innerHTML = '';
 
-            let loadedImages = 0;
-            const totalCards = adminStudentsData.length;
-
             adminStudentsData.forEach(trainee => {
                 const cardDiv = document.createElement('div');
-                cardDiv.className = 'badge-card-container';
+                cardDiv.className = 'badge-card-container mb-4';
                 const avatarSrc = convertDriveUrlToDirect(trainee.photoUrl);
                 const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
 
@@ -1217,7 +1191,7 @@
                         <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรประจำตัวผู้เข้ารับการฝึกอบรม</div>
                         <div class="badge-top-subtitle">หลักสูตรการออกแบบแผนการจัดการเรียนรู้แบบ Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA</div>
                         <div class="badge-avatar-box">
-                            <img src="${avatarSrc}" alt="รูปถ่าย" onload="checkAllImagesLoaded()" onerror="checkAllImagesLoaded()">
+                            <img src="${avatarSrc}" alt="รูปถ่าย">
                         </div>
                     </div>
                     <div class="badge-orange-stripe"></div>
@@ -1228,7 +1202,7 @@
                             <div class="badge-trainee-org">สังกัด ${trainee.level} / ${trainee.room}</div>
                         </div>
                         <div class="badge-qr-container">
-                            <img src="${qrSrc}" alt="QR Code" onload="checkAllImagesLoaded()" onerror="checkAllImagesLoaded()">
+                            <img src="${qrSrc}" alt="QR Code">
                         </div>
                         <div class="badge-footer-text">* กรุณาแสดงบัตรนี้เพื่อสแกนเช็คชื่อเข้าอบรม *</div>
                     </div>
@@ -1236,23 +1210,14 @@
                 container.appendChild(cardDiv);
             });
 
-            // ฟังก์ชันเช็คว่ารูปโหลดครบทุกใบหรือยัง (เผื่อเน็ตช้าหรือรูปโหลดไม่ทัน)
-            window.checkAllImagesLoaded = function() {
-                loadedImages++;
-                // รูปในบัตรมี 2 รูป (รูปถ่าย + QR Code) ต่อ 1 คน
-                if (loadedImages >= totalCards * 2) {
-                    window.checkAllImagesLoaded = function() {}; // ป้องกันเรียกซ้ำ
-                    triggerPrintProcess(container);
-                }
-            };
-
-            // เผื่อกรณีรูปโหลดไวเกินไปหรือมีบางลิงก์เสีย ให้บังคับปริ้นท์อัตโนมัติภายใน 1.5 วินาที
+            // หน่วงเวลาเล็กน้อยเพื่อให้รูปและ QR Code เรนเดอร์ลง DOM ครบถ้วนก่อนเรียกหน้าต่างพิมพ์
             setTimeout(() => {
-                if (document.body.classList.contains('print-all-cards') === false) {
-                    window.checkAllImagesLoaded = function() {};
-                    triggerPrintProcess(container);
-                }
-            }, 1500);
+                Swal.close();
+                document.body.classList.add('print-all-cards');
+                window.print();
+                document.body.classList.remove('print-all-cards');
+                container.innerHTML = '';
+            }, 1000);
         }
 
         function triggerPrintProcess(container) {
