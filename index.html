@@ -246,6 +246,22 @@
                 border: 1px solid #333 !important; 
             }
 
+            /* รองรับการพิมพ์บัตรทั้งหมดหลายหน้า */
+            body.print-all-cards #print-all-cards-area, body.print-all-cards #print-all-cards-area * { visibility: visible; }
+            body.print-all-cards #print-all-cards-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100vw;
+            }
+            body.print-all-cards .badge-card-container {
+                page-break-after: always;
+                break-after: page;
+                margin: 0 auto;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+            }
+
             .no-print { display: none !important; }
             .table-responsive { max-height: none !important; overflow: visible !important; }
         }
@@ -488,6 +504,8 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0 fw-bold"><i class="fa-solid fa-users text-primary"></i> ฐานข้อมูลผู้เข้ารับการอบรม (สกร.)</h5>
                                 <div>
+                                    <!-- ปุ่มพิมพ์บัตรผู้เข้าอบรมทุกคนเป็น PDF เพิ่มเข้ามาใหม่ -->
+                                    <button class="btn btn-danger btn-sm me-1" onclick="printAllStudentCards()"><i class="fa-solid fa-file-pdf me-1"></i> พิมพ์บัตรทั้งหมด (PDF)</button>
                                     <button class="btn btn-outline-secondary btn-sm me-1" onclick="downloadExcelTemplate()"><i class="fa-solid fa-file-arrow-down me-1"></i> ดาวน์โหลดแบบฟอร์ม Excel</button>
                                     <button class="btn btn-success btn-sm me-1" onclick="document.getElementById('excelFileInput').click()"><i class="fa-solid fa-file-import me-1"></i> นำเข้าไฟล์ Excel/CSV</button>
                                     <input type="file" id="excelFileInput" class="d-none" accept=".xlsx, .xls, .csv" onchange="handleExcelImport(event)">
@@ -556,6 +574,9 @@
             </div>
         </div>
     </div>
+
+    <!-- ส่วนสำหรับแสดงผลและพิมพ์บัตรผู้เข้าอบรมทั้งหมดพร้อมกันหลายหน้า (เพิ่มใหม่) -->
+    <div id="print-all-cards-area" class="d-none"></div>
 
     <!-- Modals -->
     <div class="modal fade" id="studentModal" tabindex="-1">
@@ -1135,7 +1156,7 @@
             document.body.classList.remove('print-report');
         }
 
-        // พิมพ์บัตรประจำตัว
+        // พิมพ์บัตรประจำตัวรายบุคคล
         function printStudentCard(id) {
             const trainee = adminStudentsData.find(s => s.id.toString() === id.toString());
             if (!trainee) return;
@@ -1152,6 +1173,54 @@
                 document.body.classList.add('print-card'); 
                 window.print();
                 document.body.classList.remove('print-card'); 
+            }, 500);
+        }
+
+        // พิมพ์บัตรประจำตัวผู้เข้าอบรมทั้งหมดออกเป็น PDF (เพิ่มใหม่)
+        function printAllStudentCards() {
+            if (!adminStudentsData || adminStudentsData.length === 0) {
+                Swal.fire('ไม่มีข้อมูล', 'ไม่พบรายชื่อผู้เข้าอบรมสำหรับพิมพ์บัตร', 'warning');
+                return;
+            }
+
+            const container = document.getElementById('print-all-cards-area');
+            container.innerHTML = '';
+
+            adminStudentsData.forEach(trainee => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'badge-card-container mb-3';
+                const avatarSrc = convertDriveUrlToDirect(trainee.photoUrl);
+                const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
+
+                cardDiv.innerHTML = `
+                    <div class="badge-top-section">
+                        <div class="badge-top-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรประจำตัวผู้เข้ารับการฝึกอบรม</div>
+                        <div class="badge-top-subtitle">หลักสูตรการออกแบบแผนการจัดการเรียนรู้แบบ Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA</div>
+                        <div class="badge-avatar-box">
+                            <img src="${avatarSrc}" alt="รูปถ่าย">
+                        </div>
+                    </div>
+                    <div class="badge-orange-stripe"></div>
+                    <div class="badge-bottom-section">
+                        <div>
+                            <div class="badge-trainee-name">${trainee.name}</div>
+                            <div class="badge-trainee-id">รหัสประจำตัวผู้เข้าอบรม: <span>${trainee.id}</span></div>
+                            <div class="badge-trainee-org">สังกัด ${trainee.level} / ${trainee.room}</div>
+                        </div>
+                        <div class="badge-qr-container">
+                            <img src="${qrSrc}" alt="QR Code">
+                        </div>
+                        <div class="badge-footer-text">* กรุณาแสดงบัตรนี้เพื่อสแกนเช็คชื่อเข้าอบรม *</div>
+                    </div>
+                `;
+                container.appendChild(cardDiv);
+            });
+
+            setTimeout(() => {
+                document.body.classList.add('print-all-cards');
+                window.print();
+                document.body.classList.remove('print-all-cards');
+                container.innerHTML = '';
             }, 500);
         }
 
