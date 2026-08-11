@@ -1063,7 +1063,7 @@
 
             Swal.fire({
                 title: 'กำลังแปลงบัตรเป็นภาพและสร้างไฟล์...',
-                text: 'กรุณารอสักครู่ ระบบกำลังเรนเดอร์รูปภาพความละเอียดสูง',
+                text: 'กรุณารอสักครู่ ระบบกำลังเรนเดอร์รูปภาพ',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -1081,7 +1081,12 @@
                 cardDiv.style.margin = '0';
                 cardDiv.style.marginBottom = '20px';
                 
-                const avatarSrc = convertDriveUrlToDirect(trainee.photoUrl);
+                // ใช้ DEFAULT_AVATAR หากรูป Google Drive ติดปัญหา CORS ป้องกัน error ลูป
+                let avatarSrc = convertDriveUrlToDirect(trainee.photoUrl);
+                if (avatarSrc.includes('google.com')) {
+                    avatarSrc = DEFAULT_AVATAR;
+                }
+
                 const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
 
                 cardDiv.innerHTML = `
@@ -1106,14 +1111,14 @@
                 container.appendChild(cardDiv);
             }
 
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             let cardsHtml = '';
             const cardElements = container.querySelectorAll('.badge-card-container');
 
             for (let i = 0; i < cardElements.length; i++) {
                 try {
-                    const canvas = await html2canvas(cardElements[i], { scale: 2, useCORS: true, allowTaint: true });
+                    const canvas = await html2canvas(cardElements[i], { scale: 1.5, useCORS: true, allowTaint: true });
                     const imgData = canvas.toDataURL('image/png');
 
                     cardsHtml += `
