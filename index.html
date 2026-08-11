@@ -59,10 +59,10 @@
         .stat-card .stat-label { font-size: 13.5px; opacity: 0.9; }
 
         /* ========================================================================= */
-        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (ขนาด 4x8 ซม. สมส่วน รูปและ QR เป็นสี่เหลี่ยมมุมโค้ง) */
+        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (ขนาดกว้าง 6 ซม. สูง 8 ซม.) */
         /* ========================================================================= */
         .badge-card-container {
-            width: 4cm;
+            width: 6cm;
             height: 8cm;
             background: #ffffff !important;
             border-radius: 20px;
@@ -79,20 +79,20 @@
         }
 
         .badge-header-modern {
-            padding: 10px 6px;
+            padding: 10px 8px;
             color: white;
             text-align: center;
             background: linear-gradient(135deg, #1976D2, #0D47A1) !important;
         }
 
         .badge-title-modern {
-            font-size: 8.5px;
+            font-size: 10px;
             font-weight: bold;
         }
 
         .badge-subtitle-modern {
             margin-top: 1px;
-            font-size: 7px;
+            font-size: 8px;
             opacity: 0.95;
         }
 
@@ -101,14 +101,14 @@
             background: rgba(255,255,255,.18);
             border-radius: 6px;
             padding: 3px 6px;
-            font-size: 6px;
+            font-size: 7.5px;
             line-height: 1.2;
             font-weight: 600;
         }
 
         .badge-content-modern {
             text-align: center;
-            padding: 8px 10px;
+            padding: 10px 12px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -118,8 +118,8 @@
         }
 
         .badge-avatar-modern {
-            width: 65px;
-            height: 78px;
+            width: 75px;
+            height: 90px;
             object-fit: cover;
             border-radius: 10px;
             border: 2px solid #1976D2;
@@ -127,33 +127,33 @@
         }
 
         .badge-name-modern {
-            margin: 3px 0 1px;
+            margin: 4px 0 2px;
             color: #263238 !important;
-            font-size: 9.5px;
+            font-size: 11px;
             font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 135px;
+            max-width: 200px;
         }
 
         .badge-id-modern {
-            font-size: 8.5px;
+            font-size: 9.5px;
             font-weight: bold;
             color: #1565C0 !important;
         }
 
         .badge-office-modern {
             color: #666666 !important;
-            font-size: 7px;
+            font-size: 8px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 135px;
+            max-width: 200px;
         }
 
         .badge-qr-box-modern {
-            width: 60px;
+            width: 65px;
             margin: 2px auto 0 auto;
             padding: 4px;
             background: white;
@@ -168,11 +168,11 @@
         }
 
         .badge-footer-modern {
-            padding: 5px;
+            padding: 6px;
             background: #0D47A1 !important;
             color: white !important;
             text-align: center;
-            font-size: 6px;
+            font-size: 7px;
             font-weight: 500;
         }
 
@@ -445,7 +445,7 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้ง (กว้าง 4 cm. สูง 8 cm.) ดีไซน์สมส่วน รูปและ QR สี่เหลี่ยมมุมโค้ง -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้ง (กว้าง 6 cm. สูง 8 cm.) ดีไซน์สมส่วน รูปและ QR สี่เหลี่ยมมุมโค้ง -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
             <div class="badge-header-modern">
@@ -1081,7 +1081,6 @@
                 cardDiv.style.margin = '0';
                 cardDiv.style.marginBottom = '20px';
                 
-                // ใช้ DEFAULT_AVATAR หากรูป Google Drive ติดปัญหา CORS ป้องกัน error ลูป
                 let avatarSrc = convertDriveUrlToDirect(trainee.photoUrl);
                 if (avatarSrc.includes('google.com')) {
                     avatarSrc = DEFAULT_AVATAR;
@@ -1122,8 +1121,8 @@
                     const imgData = canvas.toDataURL('image/png');
 
                     cardsHtml += `
-                        <div style="width: 4cm; height: 8cm; margin: 10px; display: inline-block; vertical-align: top; page-break-inside: avoid; text-align: center;">
-                            <img src="${imgData}" style="width: 4cm; height: 8cm; display: block; border-radius: 20px;" />
+                        <div style="width: 6cm; height: 8cm; margin: 10px; display: inline-block; vertical-align: top; page-break-inside: avoid; text-align: center;">
+                            <img src="${imgData}" style="width: 6cm; height: 8cm; display: block; border-radius: 20px;" />
                         </div>
                     `;
                 } catch (err) {
