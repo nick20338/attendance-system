@@ -14,6 +14,8 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <!-- SheetJS (XLSX) -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- html2canvas สำหรับแปลง DOM เป็นรูปภาพ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
@@ -57,13 +59,13 @@
         .stat-card .stat-label { font-size: 13.5px; opacity: 0.9; }
 
         /* ========================================================================= */
-        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (ขนาด 4x8 ซม. Modern / Glass Card / Gradient) */
+        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (ขนาด 4x8 ซม. สมส่วน รูปและ QR เป็นสี่เหลี่ยมมุมโค้ง) */
         /* ========================================================================= */
         .badge-card-container {
             width: 4cm;
             height: 8cm;
             background: #ffffff !important;
-            border-radius: 24px;
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             overflow: hidden;
             position: relative;
@@ -77,36 +79,36 @@
         }
 
         .badge-header-modern {
-            padding: 6px 4px;
+            padding: 10px 6px;
             color: white;
             text-align: center;
             background: linear-gradient(135deg, #1976D2, #0D47A1) !important;
         }
 
         .badge-title-modern {
-            font-size: 7.5px;
+            font-size: 8.5px;
             font-weight: bold;
         }
 
         .badge-subtitle-modern {
             margin-top: 1px;
-            font-size: 6.5px;
+            font-size: 7px;
             opacity: 0.95;
         }
 
         .badge-course-modern {
-            margin-top: 3px;
+            margin-top: 4px;
             background: rgba(255,255,255,.18);
             border-radius: 6px;
-            padding: 2px 4px;
-            font-size: 5.5px;
-            line-height: 1.15;
+            padding: 3px 6px;
+            font-size: 6px;
+            line-height: 1.2;
             font-weight: 600;
         }
 
         .badge-content-modern {
             text-align: center;
-            padding: 6px 8px;
+            padding: 8px 10px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -116,18 +118,18 @@
         }
 
         .badge-avatar-modern {
-            width: 45px;
-            height: 45px;
+            width: 65px;
+            height: 78px;
             object-fit: cover;
-            border-radius: 50%;
-            border: 2.5px solid #2196F3;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            border: 2px solid #1976D2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
 
         .badge-name-modern {
-            margin: 2px 0 1px;
+            margin: 3px 0 1px;
             color: #263238 !important;
-            font-size: 8.5px;
+            font-size: 9.5px;
             font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
@@ -136,14 +138,14 @@
         }
 
         .badge-id-modern {
-            font-size: 8px;
+            font-size: 8.5px;
             font-weight: bold;
             color: #1565C0 !important;
         }
 
         .badge-office-modern {
             color: #666666 !important;
-            font-size: 6.5px;
+            font-size: 7px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -151,13 +153,13 @@
         }
 
         .badge-qr-box-modern {
-            width: 45px;
-            margin: auto;
-            padding: 3px;
+            width: 60px;
+            margin: 2px auto 0 auto;
+            padding: 4px;
             background: white;
             border-radius: 10px;
             border: 1.5px solid #1565C0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
 
         .badge-qr-box-modern img {
@@ -166,11 +168,11 @@
         }
 
         .badge-footer-modern {
-            padding: 4px;
+            padding: 5px;
             background: #0D47A1 !important;
             color: white !important;
             text-align: center;
-            font-size: 5.5px;
+            font-size: 6px;
             font-weight: 500;
         }
 
@@ -443,7 +445,7 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้ง (กว้าง 4 cm. สูง 8 cm.) ดีไซน์ Modern / Gradient / Glass Card -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้ง (กว้าง 4 cm. สูง 8 cm.) ดีไซน์สมส่วน รูปและ QR สี่เหลี่ยมมุมโค้ง -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
             <div class="badge-header-modern">
@@ -1053,44 +1055,79 @@
             }, 1000);
         }
 
-        function exportAllCardsToWord() {
+        async function exportAllCardsToWord() {
             if (!adminStudentsData || adminStudentsData.length === 0) {
                 Swal.fire('ไม่มีข้อมูล', 'ไม่พบรายชื่อผู้เข้าอบรมสำหรับสร้างไฟล์ Word', 'warning');
                 return;
             }
 
             Swal.fire({
-                title: 'กำลังสร้างไฟล์ Word...',
-                text: 'กรุณารอสักครู่ ระบบกำลังจัดเตรียมเอกสาร',
+                title: 'กำลังแปลงบัตรเป็นภาพและสร้างไฟล์...',
+                text: 'กรุณารอสักครู่ ระบบกำลังเรนเดอร์รูปภาพความละเอียดสูง',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
 
-            let cardsHtml = '';
-            adminStudentsData.forEach(trainee => {
+            const container = document.getElementById('print-all-cards-area');
+            container.innerHTML = '';
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.display = 'block';
+
+            for (let i = 0; i < adminStudentsData.length; i++) {
+                const trainee = adminStudentsData[i];
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'badge-card-container';
+                cardDiv.style.margin = '0';
+                cardDiv.style.marginBottom = '20px';
+                
                 const avatarSrc = convertDriveUrlToDirect(trainee.photoUrl);
                 const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
 
-                cardsHtml += `
-                    <div style="width: 4cm; height: 8cm; border: 1px solid #d7e5ff; border-radius: 24px; margin: 10px; display: inline-block; vertical-align: top; font-family: 'Sarabun', sans-serif; background: #ffffff; overflow: hidden; box-sizing: border-box; page-break-inside: avoid; text-align: center;">
-                        <div style="padding: 6px 4px; color: white; background: linear-gradient(135deg, #1976D2, #0D47A1);">
-                            <div style="font-size: 7.5px; font-weight: bold;">🎓 บัตรประจำตัวผู้เข้าอบรม</div>
-                            <div style="margin-top: 1px; font-size: 6.5px;">กรมส่งเสริมการเรียนรู้ (สกร.)</div>
-                            <div style="margin-top: 3px; background: rgba(255,255,255,.18); border-radius: 6px; padding: 2px 4px; font-size: 5.5px; font-weight: 600;">Active Learning (GPAS 5 Steps & KPA)</div>
+                cardDiv.innerHTML = `
+                    <div class="badge-header-modern">
+                        <div class="badge-title-modern">🎓 บัตรประจำตัวผู้เข้าอบรม</div>
+                        <div class="badge-subtitle-modern">กรมส่งเสริมการเรียนรู้ (สกร.)</div>
+                        <div class="badge-course-modern">Active Learning (GPAS 5 Steps & KPA)</div>
+                    </div>
+                    <div class="badge-content-modern">
+                        <img class="badge-avatar-modern" src="${avatarSrc}" alt="รูปถ่าย" crossorigin="anonymous">
+                        <div class="badge-name-modern">${trainee.name}</div>
+                        <div class="badge-id-modern">รหัส : <span>${trainee.id}</span></div>
+                        <div class="badge-office-modern">สังกัด ${trainee.level} / ${trainee.room}</div>
+                        <div class="badge-qr-box-modern">
+                            <img src="${qrSrc}" alt="QR Code" crossorigin="anonymous">
                         </div>
-                        <div style="padding: 6px 8px;">
-                            <img src="${avatarSrc}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%; border: 2.5px solid #2196F3; margin-top: 4px;" crossorigin="anonymous">
-                            <div style="margin: 2px 0 1px; color: #263238; font-size: 8.5px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; margin-left: auto; margin-right: auto;">${trainee.name}</div>
-                            <div style="font-size: 8px; font-weight: bold; color: #1565C0;">รหัส : ${trainee.id}</div>
-                            <div style="color: #666666; font-size: 6.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; margin-left: auto; margin-right: auto;">สังกัด ${trainee.level} / ${trainee.room}</div>
-                            <div style="width: 45px; margin: 4px auto 0 auto; padding: 3px; background: white; border-radius: 10px; border: 1.5px solid #1565C0;">
-                                <img src="${qrSrc}" style="width: 100%; display: block;" crossorigin="anonymous">
-                            </div>
-                        </div>
-                        <div style="padding: 4px; background: #0D47A1; color: white; font-size: 5.5px; font-weight: 500; position: absolute; bottom: 0; width: 100%;">แสดงบัตรนี้เพื่อสแกนเช็คชื่อเข้าอบรม</div>
+                    </div>
+                    <div class="badge-footer-modern">
+                        แสดงบัตรนี้เพื่อสแกนเช็คชื่อเข้าอบรม
                     </div>
                 `;
-            });
+                container.appendChild(cardDiv);
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            let cardsHtml = '';
+            const cardElements = container.querySelectorAll('.badge-card-container');
+
+            for (let i = 0; i < cardElements.length; i++) {
+                try {
+                    const canvas = await html2canvas(cardElements[i], { scale: 2, useCORS: true, allowTaint: true });
+                    const imgData = canvas.toDataURL('image/png');
+
+                    cardsHtml += `
+                        <div style="width: 4cm; height: 8cm; margin: 10px; display: inline-block; vertical-align: top; page-break-inside: avoid; text-align: center;">
+                            <img src="${imgData}" style="width: 4cm; height: 8cm; display: block; border-radius: 20px;" />
+                        </div>
+                    `;
+                } catch (err) {
+                    console.error("Error rendering card:", err);
+                }
+            }
+
+            container.innerHTML = '';
+            container.style.display = 'none';
 
             const htmlContent = `
                 <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
@@ -1105,16 +1142,14 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `บัตรประจำตัวผู้เข้าอบรมทั้งหมด_${new Date().toISOString().split('T')[0]}.doc`;
+            a.download = `บัตรประจำตัวผู้เข้าอบรมทั้งหมด(ไฟล์รูปภาพ)_${new Date().toISOString().split('T')[0]}.doc`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            setTimeout(() => {
-                Swal.close();
-                Swal.fire('สำเร็จ!', 'ดาวน์โหลดไฟล์ Word เรียบร้อยแล้ว', 'success');
-            }, 500);
+            Swal.close();
+            Swal.fire('สำเร็จ!', 'สร้างไฟล์ Word แบบล็อกรูปภาพเรียบร้อยแล้ว', 'success');
         }
 
         function cleanSheets() {
