@@ -199,8 +199,6 @@
             text-align: center;
         }
 
-        #img-preview { max-height: 200px; object-fit: cover; border-radius: 10px; }
-
         /* ========================================================================= */
         /* CSS ควบคุมการพิมพ์ให้จบในหน้าเดียว 100% (A4 / Portrait) */
         /* ========================================================================= */
@@ -215,14 +213,12 @@
                 overflow: visible !important;
             }
 
-            /* ซ่อนทุกอย่างในหน้าเว็บเป็นค่าเริ่มต้น */
             body > *:not(#print-all-cards-area):not(#print-trainee-card) {
                 display: none !important;
             }
 
             .no-print { display: none !important; }
 
-            /* กรณีพิมพ์บัตรใบเดียว */
             body.print-card #print-trainee-card {
                 display: flex !important;
                 position: fixed;
@@ -234,7 +230,6 @@
                 align-items: center;
             }
 
-            /* กรณีพิมพ์บัตรทั้งหมดหลายหน้า */
             body.print-all-cards #print-all-cards-area {
                 display: block !important;
                 position: absolute;
@@ -266,80 +261,15 @@
     <div class="container flex-grow-1 pb-5">
         <!-- Navigation Tabs -->
         <ul class="nav nav-pills justify-content-center mb-4 no-print" id="pills-tab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-student" type="button"><i class="fa-solid fa-user-check me-1"></i> เช็คชื่อด้วยตนเอง</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-qr" type="button"><i class="fa-solid fa-qrcode me-1"></i> สแกน QR Code</button></li>
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-qr" type="button"><i class="fa-solid fa-qrcode me-1"></i> สแกน QR Code</button></li>
             <li class="nav-item"><button class="nav-link text-danger" data-bs-toggle="pill" data-bs-target="#tab-admin" type="button"><i class="fa-solid fa-lock me-1"></i> จัดการระบบ (Admin)</button></li>
         </ul>
 
         <!-- Tab Contents -->
         <div class="tab-content" id="pills-tabContent">
 
-            <!-- 1. โหมดผู้เข้ารับการอบรมลงเวลาด้วยตนเอง -->
-            <div class="tab-pane fade show active" id="tab-student" role="tabpanel">
-                <div class="card max-w-500 mx-auto" style="max-width: 600px;">
-                    <div class="card-header bg-white py-3"><h5 class="mb-0 text-info"><i class="fa-solid fa-pen-to-square me-2"></i> แบบฟอร์มลงเวลาเข้าร่วมอบรมด้วยตนเอง</h5></div>
-                    <div class="card-body">
-                        <form id="studentForm">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">รหัสผู้เข้ารับการอบรม</label>
-                                <input type="number" class="form-control form-control-lg text-center fw-bold" id="s-id" placeholder="ระบุรหัสประจำตัวผู้เข้าอบรม" required>
-                            </div>
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">สังกัด (สกร.)</label>
-                                    <select class="form-select" id="s-level" required>
-                                        <option value="">เลือกสังกัด...</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">กลุ่ม / รุ่นการอบรม</label>
-                                    <select class="form-select" id="s-room" required>
-                                        <option value="">เลือกรุ่น...</option>
-                                        <option value="รุ่นที่ 1">รุ่นที่ 1</option>
-                                        <option value="รุ่นที่ 2">รุ่นที่ 2</option>
-                                        <option value="รุ่นที่ 3">รุ่นที่ 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">หัวข้อการอบรม / โมดูล</label>
-                                <select class="form-select" id="s-subject" required><option value="">กำลังโหลด...</option></select>
-                            </div>
-                            <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <label class="form-label fw-bold">วันที่อบรม</label>
-                                    <select class="form-select" id="s-date" required>
-                                        <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
-                                        <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label fw-bold">รอบเวลาสแกน</label>
-                                    <select class="form-select" id="s-period" required>
-                                        <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
-                                        <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
-                                        <option value="รอบเย็น (18.00 น.)">รอบเย็น (18.00 น.)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold"><i class="fa-solid fa-camera me-1 text-primary"></i> แนบรูปถ่ายเพื่อยืนยันตัวตน</label>
-                                <input type="file" class="form-control" id="s-photo" accept="image/*" onchange="previewImage(event)" required>
-                                <div class="form-text text-muted">ถ่ายภาพจากกล้องหรือเลือกไฟล์รูปภาพจากเครื่อง</div>
-                                <div class="text-center mt-2">
-                                    <img id="img-preview" src="" class="d-none img-thumbnail">
-                                </div>
-                            </div>
-
-                            <button type="button" class="btn btn-info w-100 btn-lg text-white fw-bold" onclick="saveStudentAttendance()"><i class="fa-solid fa-check-circle me-2"></i> ยืนยันการลงเวลาอบรม</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. โหมดสแกน QR Code -->
-            <div class="tab-pane fade" id="tab-qr" role="tabpanel">
+            <!-- 1. โหมดสแกน QR Code (เปลี่ยนเป็นหน้าแรกเริ่มต้น) -->
+            <div class="tab-pane fade show active" id="tab-qr" role="tabpanel">
                 <div class="card max-w-500 mx-auto" style="max-width: 600px;">
                     <div class="card-header bg-white py-3"><h5 class="mb-0 text-dark"><i class="fa-solid fa-camera me-2"></i> สแกนบัตรประจำตัวผู้เข้าอบรม (QR Code)</h5></div>
                     <div class="card-body">
@@ -371,7 +301,7 @@
                 </div>
             </div>
 
-            <!-- 3. โหมด Admin -->
+            <!-- 2. โหมด Admin -->
             <div class="tab-pane fade" id="tab-admin" role="tabpanel">
                 <div class="card mx-auto no-print" id="adminLoginCard" style="max-width: 400px;">
                     <div class="card-body text-center py-5">
@@ -491,7 +421,6 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0 fw-bold"><i class="fa-solid fa-users text-primary"></i> ฐานข้อมูลผู้เข้ารับการอบรม (สกร.)</h5>
                                 <div>
-                                    <!-- ปุ่มพิมพ์บัตรผู้เข้าอบรมทุกคนเป็น PDF เพิ่มเข้ามาใหม่ -->
                                     <button class="btn btn-danger btn-sm me-1" onclick="printAllStudentCards()"><i class="fa-solid fa-file-pdf me-1"></i> พิมพ์บัตรทั้งหมด (PDF)</button>
                                     <button class="btn btn-outline-secondary btn-sm me-1" onclick="downloadExcelTemplate()"><i class="fa-solid fa-file-arrow-down me-1"></i> ดาวน์โหลดแบบฟอร์ม Excel</button>
                                     <button class="btn btn-success btn-sm me-1" onclick="document.getElementById('excelFileInput').click()"><i class="fa-solid fa-file-import me-1"></i> นำเข้าไฟล์ Excel/CSV</button>
@@ -537,7 +466,7 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม (ปรับแก้ส่วนหัวและควบคุมพิมพ์ 1 หน้า) -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้งสไตล์สวยงาม -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
             <div class="badge-top-section">
@@ -562,7 +491,7 @@
         </div>
     </div>
 
-    <!-- ส่วนสำหรับแสดงผลและพิมพ์บัตรผู้เข้าอบรมทั้งหมดพร้อมกันหลายหน้า (เพิ่มใหม่) -->
+    <!-- ส่วนสำหรับแสดงผลและพิมพ์บัตรผู้เข้าอบรมทั้งหมดพร้อมกันหลายหน้า -->
     <div id="print-all-cards-area" class="d-none"></div>
 
     <!-- Modals -->
@@ -630,7 +559,6 @@
         let html5QrcodeScanner = null;
         let lastScannedId = "";
         let lastScanTime = 0;
-        let base64Photo = "";
 
         let studentModalInstance, teacherModalInstance;
 
@@ -659,40 +587,6 @@
             return url;
         }
 
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        const max_size = 600;
-
-                        if (width > height) {
-                            if (width > max_size) { height *= max_size / width; width = max_size; }
-                        } else {
-                            if (height > max_size) { width *= max_size / height; height = max_size; }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        base64Photo = canvas.toDataURL('image/jpeg', 0.7);
-                        const imgPreview = document.getElementById('img-preview');
-                        imgPreview.src = base64Photo;
-                        imgPreview.classList.remove('d-none');
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
         async function callGASAPI(action, payloadData = {}) {
             const payload = { action: action, ...payloadData };
             const response = await fetch(GAS_API_URL, {
@@ -719,57 +613,26 @@
         function loadUniqueLevels() {
             callGASAPI('getUniqueLevelsAdmin')
                 .then(levels => {
-                    ['s-level', 'f-level'].forEach(id => {
-                        const select = document.getElementById(id);
-                        if(select && levels) {
-                            select.innerHTML = id === 'f-level' ? '<option value="">ทุกสังกัด</option>' : '<option value="">เลือกสังกัด...</option>';
-                            levels.forEach(lvl => {
-                                select.innerHTML += `<option value="${lvl}">${lvl}</option>`;
-                            });
-                            document.getElementById('stat-levels-count').innerText = levels.length;
-                        }
-                    });
+                    const select = document.getElementById('f-level');
+                    if(select && levels) {
+                        select.innerHTML = '<option value="">ทุกสังกัด</option>';
+                        levels.forEach(lvl => {
+                            select.innerHTML += `<option value="${lvl}">${lvl}</option>`;
+                        });
+                        document.getElementById('stat-levels-count').innerText = levels.length;
+                    }
                 }).catch(() => {});
         }
 
         function populateTeacherDropdowns(data) {
             allTeachersData = data || [];
-            ['s-subject', 'q-subject'].forEach(id => {
-                const select = document.getElementById(id);
-                if (select) {
-                    select.innerHTML = '<option value="">-- เลือกหัวข้อการอบรม --</option>';
-                    allTeachersData.forEach(item => {
-                        select.innerHTML += `<option value="${item.subject}">${item.subject} (${item.credit} ชม.)</option>`;
-                    });
-                }
-            });
-        }
-
-        function saveStudentAttendance() {
-            const form = document.getElementById('studentForm'); 
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-
-            const record = { 
-                id: document.getElementById('s-id').value, 
-                subject: document.getElementById('s-subject').value, 
-                level: document.getElementById('s-level').value, 
-                room: document.getElementById('s-room').value, 
-                period: document.getElementById('s-period').value, 
-                date: document.getElementById('s-date').value, 
-                photo: base64Photo,
-                status: 'เข้าร่วม' 
-            };
-
-            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-            callGASAPI('saveSingleAttendance', { record: record })
-                .then(res => { 
-                    Swal.fire('สำเร็จ!', res, 'success'); 
-                    form.reset(); 
-                    document.getElementById('img-preview').classList.add('d-none');
-                    base64Photo = "";
-                    loadUniqueLevels();
-                })
-                .catch(showError);
+            const select = document.getElementById('q-subject');
+            if (select) {
+                select.innerHTML = '<option value="">-- เลือกหัวข้อการอบรม --</option>';
+                allTeachersData.forEach(item => {
+                    select.innerHTML += `<option value="${item.subject}">${item.subject} (${item.credit} ชม.)</option>`;
+                });
+            }
         }
 
         // =========================================================================
@@ -1143,7 +1006,6 @@
             document.body.classList.remove('print-report');
         }
 
-        // พิมพ์บัตรประจำตัวรายบุคคล
         function printStudentCard(id) {
             const trainee = adminStudentsData.find(s => s.id.toString() === id.toString());
             if (!trainee) return;
@@ -1163,8 +1025,7 @@
             }, 500);
         }
 
-        // พิมพ์บัตรประจำตัวผู้เข้าอบรมทั้งหมดออกเป็น PDF (เพิ่มใหม่)
-function printAllStudentCards() {
+        function printAllStudentCards() {
             if (!adminStudentsData || adminStudentsData.length === 0) {
                 Swal.fire('ไม่มีข้อมูล', 'ไม่พบรายชื่อผู้เข้าอบรมสำหรับพิมพ์บัตร', 'warning');
                 return;
@@ -1210,7 +1071,6 @@ function printAllStudentCards() {
                 container.appendChild(cardDiv);
             });
 
-            // หน่วงเวลาเล็กน้อยเพื่อให้รูปและ QR Code เรนเดอร์ลง DOM ครบถ้วนก่อนเรียกหน้าต่างพิมพ์
             setTimeout(() => {
                 Swal.close();
                 document.body.classList.add('print-all-cards');
@@ -1218,14 +1078,6 @@ function printAllStudentCards() {
                 document.body.classList.remove('print-all-cards');
                 container.innerHTML = '';
             }, 1000);
-        }
-
-        function triggerPrintProcess(container) {
-            Swal.close();
-            document.body.classList.add('print-all-cards');
-            window.print();
-            document.body.classList.remove('print-all-cards');
-            container.innerHTML = '';
         }
 
         function cleanSheets() {
