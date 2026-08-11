@@ -57,95 +57,67 @@
         .stat-card .stat-label { font-size: 13.5px; opacity: 0.9; }
 
         /* ========================================================================= */
-        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (ขนาด กว้าง 4 cm. สูง 8 cm. ธีมม่วง-ทองหรูหรา) */
+        /* ดีไซน์บัตรประจำตัวผู้เข้าอบรม (ขนาด 4x8 ซม. เน้นชื่อโครงการและตัวหนังสือเด่นชัด) */
         /* ========================================================================= */
         .badge-card-container {
             width: 4cm;
             height: 8cm;
-            background: linear-gradient(135deg, #2a0845, #6441a5) !important;
+            background: #ffffff !important;
             border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             overflow: hidden;
             position: relative;
             margin: 0 auto;
-            border: 1.5px solid #ffcc00;
+            border: 1.5px solid #0d6efd;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            color: #ffffff;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
 
-        .badge-top-header {
+        .badge-header-modern {
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7) !important;
+            color: #ffffff !important;
+            padding: 6px 4px;
             text-align: center;
-            padding: 6px 4px 4px 4px;
-            background: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid rgba(255, 204, 0, 0.3);
+            border-bottom: 2px solid #ffc107;
         }
 
-        .badge-org-name {
-            font-size: 7px;
+        .badge-main-title {
+            font-size: 8px;
             font-weight: 700;
-            color: #ffcc00;
-            letter-spacing: 0.2px;
+            color: #ffc107;
             text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
-        .badge-project-title {
-            font-size: 6.5px;
-            color: #f0f0f0;
-            line-height: 1.15;
-            margin-top: 1px;
-            font-weight: 500;
-        }
-
-        .badge-course-box {
-            background: linear-gradient(90deg, #4b134f, #c94b4b);
-            margin: 4px 6px;
-            padding: 4px 6px;
-            border-radius: 6px;
-            border: 1px solid #ffcc00;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .badge-course-label {
-            font-size: 6px;
-            color: #ffcc00;
+        .badge-sub-title {
+            font-size: 8.5px;
             font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .badge-course-name {
-            font-size: 6.5px;
             color: #ffffff;
-            font-weight: 700;
             line-height: 1.15;
             margin-top: 1px;
         }
 
-        .badge-content-body {
-            background: #ffffff;
-            margin: 0 6px 6px 6px;
-            border-radius: 8px;
-            padding: 6px;
+        .badge-body-section {
+            padding: 5px 6px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            color: #333333;
+            background-color: #f8f9fa !important;
         }
 
         .badge-avatar-box {
-            width: 50px;
-            height: 60px;
+            width: 55px;
+            height: 65px;
             border-radius: 6px;
-            border: 2px solid #6441a5;
+            border: 2px solid #0d6efd !important;
             overflow: hidden;
-            background-color: #e9ecef;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            background-color: #e9ecef !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -157,63 +129,62 @@
             object-fit: cover;
         }
 
-        .badge-trainee-name {
-            font-size: 10px;
-            font-weight: 700;
-            color: #2a0845;
+        .badge-info-container {
             text-align: center;
-            margin-top: 2px;
+            width: 100%;
+        }
+
+        .badge-trainee-name {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #212529 !important;
             line-height: 1.1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 130px;
+            max-width: 135px;
+            margin: 0 auto;
         }
 
         .badge-trainee-id {
-            font-size: 7.5px;
-            color: #d97706;
+            font-size: 8px;
+            color: #0d6efd !important;
             font-weight: 700;
             margin-top: 1px;
-            text-align: center;
         }
 
         .badge-trainee-org {
-            font-size: 7px;
-            color: #555555;
-            text-align: center;
-            margin-top: 1px;
+            font-size: 7.5px;
+            color: #495057 !important;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 130px;
+            max-width: 135px;
+            margin: 0 auto;
         }
 
         .badge-qr-container {
-            padding: 2px;
-            background-color: #ffffff;
-            border: 1px solid #6441a5;
-            border-radius: 4px;
+            padding: 3px;
+            background-color: #ffffff !important;
+            border: 1.5px solid #0d6efd !important;
+            border-radius: 6px;
             display: inline-block;
         }
 
         .badge-qr-container img {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             display: block;
         }
 
         .badge-footer-bar {
-            background: #ffcc00;
-            color: #2a0845;
-            font-size: 5.5px;
-            font-weight: 700;
+            background-color: #212529 !important;
+            color: #ffffff !important;
+            font-size: 6px;
             text-align: center;
             padding: 2px 0;
-            margin-top: 2px;
-            border-radius: 3px;
+            font-weight: 500;
             width: 100%;
-            letter-spacing: 0.2px;
         }
 
         /* ========================================================================= */
@@ -262,7 +233,7 @@
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
                 box-shadow: none !important;
-                border: 1px solid #6441a5 !important;
+                border: 1px solid #0d6efd !important;
             }
         }
     </style>
@@ -484,22 +455,22 @@
         </div>
     </footer>
 
-    <!-- บัตรประจำตัวพิมพ์แนวตั้ง (กว้าง 4 cm. สูง 8 cm.) ดีไซน์ใหม่ -->
+    <!-- บัตรประจำตัวพิมพ์แนวตั้ง (กว้าง 4 cm. สูง 8 cm.) ดีไซน์เน้นชื่อโครงการใหญ่ อ่านง่าย -->
     <div id="print-trainee-card" class="d-none">
         <div class="badge-card-container">
-            <div class="badge-top-header">
-                <div class="badge-org-name">กรมส่งเสริมการเรียนรู้ (สกร.)</div>
-                <div class="badge-project-title">โครงการอบรมพัฒนาข้าราชการครูและบุคลากรทางการศึกษา</div>
+            <div class="badge-header-modern">
+                <div class="badge-main-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรประจำตัวผู้เข้าอบรม</div>
+                <div class="badge-sub-title">กรมส่งเสริมการเรียนรู้ (สกร.)</div>
             </div>
-            <div class="badge-course-box">
-                <div class="badge-course-label">หลักสูตรฝึกอบรม</div>
-                <div class="badge-course-name">การออกแบบแผนการจัดการเรียนรู้แบบ Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA</div>
-            </div>
-            <div class="badge-content-body">
+            <div class="badge-body-section">
+                <div class="text-center w-100 px-1">
+                    <div style="font-size: 6px; font-weight: 700; color: #0d6efd; text-transform: uppercase;">หลักสูตรการออกแบบแผนการจัดการเรียนรู้</div>
+                    <div style="font-size: 7px; font-weight: 700; color: #212529; line-height: 1.15; margin-top: 1px;">Active Learning (GPAS 5 Steps & KPA)</div>
+                </div>
                 <div class="badge-avatar-box">
                     <img id="card-avatar" src="" alt="รูปถ่าย">
                 </div>
-                <div>
+                <div class="badge-info-container">
                     <div class="badge-trainee-name" id="card-name">ชื่อ-สกุล</div>
                     <div class="badge-trainee-id">รหัส: <span id="card-id">6901</span></div>
                     <div class="badge-trainee-org" id="card-level-room">สังกัด / รุ่น</div>
@@ -508,9 +479,7 @@
                     <img id="card-qr" src="" alt="QR Code">
                 </div>
             </div>
-            <div class="px-2 pb-1">
-                <div class="badge-footer-bar">* แสดงบัตรเพื่อสแกนเช็คชื่อเข้าอบรม *</div>
-            </div>
+            <div class="badge-footer-bar">* แสดงบัตรเพื่อสแกนเช็คชื่อเข้าอบรม *</div>
         </div>
     </div>
 
@@ -1071,19 +1040,19 @@
                 const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${trainee.id}`;
 
                 cardDiv.innerHTML = `
-                    <div class="badge-top-header">
-                        <div class="badge-org-name">กรมส่งเสริมการเรียนรู้ (สกร.)</div>
-                        <div class="badge-project-title">โครงการอบรมพัฒนาข้าราชการครูและบุคลากรทางการศึกษา</div>
+                    <div class="badge-header-modern">
+                        <div class="badge-main-title"><i class="fa-solid fa-graduation-cap me-1"></i> บัตรประจำตัวผู้เข้าอบรม</div>
+                        <div class="badge-sub-title">กรมส่งเสริมการเรียนรู้ (สกร.)</div>
                     </div>
-                    <div class="badge-course-box">
-                        <div class="badge-course-label">หลักสูตรฝึกอบรม</div>
-                        <div class="badge-course-name">การออกแบบแผนการจัดการเรียนรู้แบบ Active Learning ตามแนวคิด GPAS 5 Steps และการวัดผลแบบ KPA</div>
-                    </div>
-                    <div class="badge-content-body">
+                    <div class="badge-body-section">
+                        <div class="text-center w-100 px-1">
+                            <div style="font-size: 6px; font-weight: 700; color: #0d6efd; text-transform: uppercase;">หลักสูตรการออกแบบแผนการจัดการเรียนรู้</div>
+                            <div style="font-size: 7px; font-weight: 700; color: #212529; line-height: 1.15; margin-top: 1px;">Active Learning (GPAS 5 Steps & KPA)</div>
+                        </div>
                         <div class="badge-avatar-box">
                             <img src="${avatarSrc}" alt="รูปถ่าย">
                         </div>
-                        <div>
+                        <div class="badge-info-container">
                             <div class="badge-trainee-name">${trainee.name}</div>
                             <div class="badge-trainee-id">รหัส: <span>${trainee.id}</span></div>
                             <div class="badge-trainee-org">สังกัด ${trainee.level} / ${trainee.room}</div>
@@ -1092,9 +1061,7 @@
                             <img src="${qrSrc}" alt="QR Code">
                         </div>
                     </div>
-                    <div class="px-2 pb-1">
-                        <div class="badge-footer-bar">* แสดงบัตรเพื่อสแกนเช็คชื่อเข้าอบรม *</div>
-                    </div>
+                    <div class="badge-footer-bar">* แสดงบัตรเพื่อสแกนเช็คชื่อเข้าอบรม *</div>
                 `;
                 container.appendChild(cardDiv);
             });
