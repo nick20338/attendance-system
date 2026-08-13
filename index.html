@@ -251,10 +251,10 @@
                 <div class="card max-w-500 mx-auto" style="max-width: 600px;">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-dark"><i class="fa-solid fa-camera me-2"></i> สแกนบัตรประจำตัวผู้เข้าอบรม (QR Code)</h5>
-                        <button class="btn btn-outline-success btn-sm" onclick="showManualAttendanceModal()"><i class="fa-solid fa-user-check me-1"></i> เช็คชื่อด้วยตนเอง (Manual)</button>
+                        <button class="btn btn-outline-success btn-sm" onclick="showManualAttendanceModal()"><i class="fa-solid fa-users-gear me-1"></i> เช็คชื่อแบบ Manual (หลายคน)</button>
                     </div>
                     <div class="card-body">
-                        <div class="alert alert-warning py-2 mb-3"><small>กรุณาตั้งค่าหัวข้อการอบรม วันที่ และรอบเวลาก่อนเริ่มสแกน หรือใช้ปุ่มเช็คชื่อด้วยตนเองด้านบน</small></div>
+                        <div class="alert alert-warning py-2 mb-3"><small>กรุณาตั้งค่าหัวข้อการอบรม วันที่ และรอบเวลาก่อนเริ่มสแกน หรือใช้ปุ่มเช็คชื่อแบบ Manual ด้านบน</small></div>
                         <div class="row g-2 mb-3">
                             <div class="col-12">
                                 <select class="form-select form-select-sm" id="q-subject"><option value="">-- เลือกหัวข้อการอบรม --</option></select>
@@ -335,7 +335,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="mb-0 fw-bold" id="report-title"><i class="fa-solid fa-chart-pie me-2 text-primary"></i> รายงานเวลาการอบรมสรุปรายบุคคล (15 ชั่วโมง)</h5>
                                     <div class="no-print">
-                                        <button class="btn btn-outline-success btn-sm me-1" onclick="showManualAttendanceModal()"><i class="fa-solid fa-user-check me-1"></i> เช็คชื่อแบบ Manual</button>
+                                        <button class="btn btn-outline-success btn-sm me-1" onclick="showManualAttendanceModal()"><i class="fa-solid fa-users-gear me-1"></i> เช็คชื่อแบบ Manual (หลายคน)</button>
                                         <button class="btn btn-outline-primary btn-sm me-1" onclick="loadAdminReports()"><i class="fa-solid fa-arrows-rotate me-1"></i> รีเฟรช</button>
                                         <button class="btn btn-secondary btn-sm me-1" onclick="printReport()"><i class="fa-solid fa-print"></i> พิมพ์ / PDF</button>
                                         <button class="btn btn-success btn-sm me-1" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> ส่งออก Excel</button>
@@ -522,30 +522,30 @@
         </div>
     </div>
 
-    <!-- Modal เช็คชื่อแบบ Manual -->
+    <!-- Modal เช็คชื่อแบบ Manual (เลือกได้หลายคน) -->
     <div class="modal fade" id="manualAttendanceModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="fa-solid fa-user-check me-2"></i> เช็คชื่อเข้าอบรมด้วยตนเอง (Manual)</h5>
+                    <h5 class="modal-title"><i class="fa-solid id fa-users-gear me-2"></i> เช็คชื่อเข้าอบรมแบบ Manual (เลือกได้หลายคน)</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="manualAttendanceForm">
-                        <div class="mb-2">
-                            <label class="form-label">หัวข้อการอบรม</label>
-                            <select class="form-select form-select-sm" id="manual-subject" required></select>
-                        </div>
-                        <div class="row mb-2">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-2">
+                                <label class="form-label fw-bold">หัวข้อการอบรม</label>
+                                <select class="form-select form-select-sm" id="manual-subject" required></select>
+                            </div>
                             <div class="col-6">
-                                <label class="form-label">วันที่</label>
+                                <label class="form-label fw-bold">วันที่</label>
                                 <select class="form-select form-select-sm" id="manual-date">
                                     <option value="13 ส.ค. 2569">13 สิงหาคม 2569</option>
                                     <option value="14 ส.ค. 2569">14 สิงหาคม 2569</option>
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label class="form-label">รอบเวลา</label>
+                                <label class="form-label fw-bold">รอบเวลา</label>
                                 <select class="form-select form-select-sm" id="manual-period">
                                     <option value="รอบเช้า (09.00 น.)">รอบเช้า (09.00 น.)</option>
                                     <option value="รอบบ่าย (13.00 น.)">รอบบ่าย (13.00 น.)</option>
@@ -553,26 +553,33 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label">ผู้เข้ารับการอบรม</label>
-                            <select class="form-select" id="manual-student-id" required>
-                                <option value="">-- เลือกรายชื่อผู้เข้าอบรม --</option>
-                            </select>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">สถานะการเข้าอบรม</label>
-                            <select class="form-select" id="manual-status">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">สถานะการเข้าอบรมสำหรับผู้ที่เลือก</label>
+                            <select class="form-select form-select-sm" id="manual-status">
                                 <option value="เข้าร่วม">เข้าร่วม</option>
                                 <option value="สาย">สาย</option>
                                 <option value="ลา">ลา</option>
                                 <option value="ขาด">ขาด</option>
                             </select>
                         </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="form-label fw-bold mb-0">เลือกรายชื่อผู้เข้าอบรม (กด Ctrl หรือ Cmd ค้างไว้เพื่อเลือกหลายคน)</label>
+                                <div>
+                                    <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="selectAllManualStudents(true)">เลือกทั้งหมด</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" onclick="selectAllManualStudents(false)">ยกเลิกการเลือก</button>
+                                </div>
+                            </div>
+                            <select class="form-select" id="manual-student-ids" multiple size="10" required style="font-size: 13.5px;">
+                                <option value="" disabled>-- กำลังโหลดรายชื่อ --</option>
+                            </select>
+                            <small class="text-muted">เคล็ดลับ: สามารถกดคลิกค้าง หรือกด Shift/Ctrl เพื่อเลือกรายชื่อทีละหลายๆ คนพร้อมกันได้</small>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-success" onclick="saveManualAttendance()">บันทึกเวลา</button>
+                    <button type="button" class="btn btn-success" onclick="saveManualAttendanceBatch()"><i class="fa-solid fa-floppy-disk me-1"></i> บันทึกเวลาทั้งหมด</button>
                 </div>
             </div>
         </div>
@@ -675,17 +682,20 @@
         }
 
         // =========================================================================
-        // เช็คชื่อแบบ Manual
+        // เช็คชื่อแบบ Manual (เลือกหลายคน)
         // =========================================================================
         async function showManualAttendanceModal() {
             try {
                 if (!adminStudentsData || adminStudentsData.length === 0) {
                     adminStudentsData = await callGASAPI('getAllStudentsAdmin') || [];
                 }
-                const select = document.getElementById('manual-student-id');
-                select.innerHTML = '<option value="">-- เลือกรายชื่อผู้เข้าอบรม --</option>';
+                const select = document.getElementById('manual-student-ids');
+                select.innerHTML = '';
                 adminStudentsData.forEach(s => {
-                    select.innerHTML += `<option value="${s.id}">${s.id} - ${s.name} (${s.level || '-'}/${s.room || '-'})</option>`;
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = `${s.id} - ${s.name} (${s.level || '-'}/${s.room || '-'})`;
+                    select.appendChild(opt);
                 });
                 manualModalInstance.show();
             } catch (err) {
@@ -693,39 +703,61 @@
             }
         }
 
-        function saveManualAttendance() {
+        function selectAllManualStudents(selectState) {
+            const select = document.getElementById('manual-student-ids');
+            for (let i = 0; i < select.options.length; i++) {
+                select.options[i].selected = selectState;
+            }
+        }
+
+        async function saveManualAttendanceBatch() {
             const subject = document.getElementById('manual-subject').value;
             const date = document.getElementById('manual-date').value;
             const period = document.getElementById('manual-period').value;
-            const studentId = document.getElementById('manual-student-id').value;
             const status = document.getElementById('manual-status').value;
+            const selectElement = document.getElementById('manual-student-ids');
+            
+            const selectedOptions = Array.from(selectElement.selectedOptions);
+            const selectedIds = selectedOptions.map(opt => opt.value);
 
-            if (!subject || !studentId) {
-                Swal.fire('แจ้งเตือน', 'กรุณาเลือกหัวข้อและรายชื่อผู้เข้าอบรมให้ครบถ้วน', 'warning');
+            if (!subject) {
+                Swal.fire('แจ้งเตือน', 'กรุณาเลือกหัวข้อการอบรม', 'warning');
                 return;
             }
 
-            const record = { id: studentId, subject, date, period, status };
+            if (selectedIds.length === 0) {
+                Swal.fire('แจ้งเตือน', 'กรุณาเลือกรายชื่อผู้เข้ารับการอบรมอย่างน้อย 1 คน', 'warning');
+                return;
+            }
 
-            Swal.fire({ title: 'กำลังบันทึกเวลา...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            Swal.fire({
+                title: `กำลังบันทึกเวลา (${selectedIds.length} คน)...`,
+                text: 'กรุณารอสักครู่ ระบบกำลังทยอยบันทึกข้อมูล',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
 
-            callGASAPI('saveSingleAttendance', { record: record })
-                .then(() => {
-                    manualModalInstance.hide();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'บันทึกสำเร็จ!',
-                        text: `บันทึกสถานะเรียบร้อยแล้ว`,
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    if (!document.getElementById('adminPanel').classList.contains('d-none')) {
-                        loadAdminReports();
-                    }
-                })
-                .catch(err => {
-                    Swal.fire('เกิดข้อผิดพลาด', err.message || err, 'error');
+            try {
+                for (let i = 0; i < selectedIds.length; i++) {
+                    const record = { id: selectedIds[i], subject, date, period, status };
+                    await callGASAPI('saveSingleAttendance', { record: record });
+                }
+
+                manualModalInstance.hide();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'บันทึกสำเร็จ!',
+                    text: `บันทึกสถานะให้ผู้เข้าอบรมจำนวน ${selectedIds.length} คนเรียบร้อยแล้ว`,
+                    timer: 2500,
+                    showConfirmButton: true
                 });
+
+                if (!document.getElementById('adminPanel').classList.contains('d-none')) {
+                    loadAdminReports();
+                }
+            } catch (err) {
+                Swal.fire('เกิดข้อผิดพลาด', err.message || err, 'error');
+            }
         }
 
         // =========================================================================
